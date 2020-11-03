@@ -85,6 +85,25 @@ public class InverseKinematics : MonoBehaviour
 
     void DoInverseKinematics()
     {
+        PreRunCheck();
+        GetPositions();
+
+        Quaternion rootRotation = (_bones[ROOT_BONE_INDEX].parent != null) ? _bones[ROOT_BONE_INDEX].parent.rotation : Quaternion.identity;
+        Quaternion rootRotationDifference = rootRotation * Quaternion.Inverse(_startRotationRoot);
+
+        //Can leg reach target? Distance from root bone to target compared with total leg length
+        //SqrMag is faster than mag 
+        if ((_target.position - _bones[ROOT_BONE_INDEX].position).sqrMagnitude >= _completeLength * _completeLength)
+            Stretch(); //It can't! -> Stretch leg completely toward target
+        else
+            Bend(); //Target is close, we need to bend!
+
+        AlignTowardPole();
+        SetPositionsAndRotations();
+    }
+
+    void PreRunCheck()
+    {
         //Can't do anything just return with error
         if (_target == null)
         {
@@ -95,22 +114,6 @@ public class InverseKinematics : MonoBehaviour
         //If changes are made in inspector at runtime -> Init again!
         if (_bonesLength.Length != _chainLength)
             Init();
-
-        GetPositions();
-
-        Quaternion rootRotation = (_bones[ROOT_BONE_INDEX].parent != null) ? _bones[ROOT_BONE_INDEX].parent.rotation : Quaternion.identity;
-        Quaternion rootRotationDifference = rootRotation * Quaternion.Inverse(_startRotationRoot);
-
-        //Can leg reach target? Distance from root bone to target compared with total leg length
-        //SqrMag is faster than mag 
-        if ((_target.position - _bones[ROOT_BONE_INDEX].position).sqrMagnitude >= _completeLength * _completeLength)
-            Stretch();
-        //Target is close, we need to bend!
-        else
-            Bend();
-
-        AlignTowardPole();
-        SetPositionsAndRotations();
     }
 
     void GetPositions()
@@ -122,7 +125,6 @@ public class InverseKinematics : MonoBehaviour
 
     void Stretch()
     {
-        //It can't! -> Stretch leg completely toward target
         Vector3 direction = (_target.position - _bonesPosition[ROOT_BONE_INDEX]).normalized;
 
         for (int i = 1; i < _bonesPosition.Length; i++)
