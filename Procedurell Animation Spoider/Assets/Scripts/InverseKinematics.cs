@@ -30,6 +30,12 @@ public class InverseKinematics : MonoBehaviour
     Transform[] _bones;
     Vector3[] _bonesPosition; //Safer to do math seperately from bone positions directly
 
+    //Rotation stuff
+    Vector3[] _startDirectionSuccesser;
+    Quaternion[] _startRotationBones;
+    Quaternion _startRotationTarget;
+    Quaternion _startRotationRoot;
+
     readonly int ROOT_BONE_INDEX = 0;
 
     private void Awake()
@@ -43,6 +49,10 @@ public class InverseKinematics : MonoBehaviour
         _bonesPosition = new Vector3[_chainLength + 1];
         _bonesLength = new float[_chainLength];
 
+        _startDirectionSuccesser = new Vector3[_chainLength + 1];
+        _startRotationBones = new Quaternion[_chainLength + 1];
+        _startRotationTarget = _target.rotation;
+
         _completeLength = 0;
 
         //init bone transforms
@@ -50,10 +60,15 @@ public class InverseKinematics : MonoBehaviour
         for (int i = _bones.Length - 1; i >= 0; i--)
         {
             _bones[i] = current;
+            _startRotationBones[i] = current.rotation;
 
+            //End bone/leaf bone
+            if (i == _bones.Length - 1)
+                _startDirectionSuccesser[i] = _target.position - current.position;
             //Mid-bone (not end bone)
-            if (i != _bones.Length - 1)
+            else
             {
+                _startDirectionSuccesser[i] = _bones[i + 1].position - current.position;
                 //Calculate bone length
                 _bonesLength[i] = (_bones[i + 1].position - current.position).magnitude;
                 _completeLength += _bonesLength[i];
@@ -70,6 +85,7 @@ public class InverseKinematics : MonoBehaviour
 
     void DoInverseKinematics()
     {
+        //Can't do anything just return with error
         if (_target == null)
         {
             Debug.LogError("No target is set!");
@@ -80,47 +96,66 @@ public class InverseKinematics : MonoBehaviour
         if (_bonesLength.Length != _chainLength)
             Init();
 
-        //Set current positions from bones
-        for (int i = 0; i < _bones.Length; i++)
-            _bonesPosition[i] = _bones[i].position;
+        GetPositions();
+
+        Quaternion rootRotation = (_bones[ROOT_BONE_INDEX].parent != null) ? _bones[ROOT_BONE_INDEX].parent.rotation : Quaternion.identity;
+        Quaternion rootRotationDifference = rootRotation * Quaternion.Inverse(_startRotationRoot);
 
         //Can leg reach target? Distance from root bone to target compared with total leg length
         //SqrMag is faster than mag 
         if ((_target.position - _bones[ROOT_BONE_INDEX].position).sqrMagnitude >= _completeLength * _completeLength)
-        {
-            //It can't! -> Stretch leg completely toward target
-            Vector3 direction = (_target.position - _bonesPosition[ROOT_BONE_INDEX]).normalized;
-
-            for (int i = 1; i < _bonesPosition.Length; i++)
-                _bonesPosition[i] = _bonesPosition[i - 1] + direction * _bonesLength[i - 1];
-        }
+            Stretch();
         //Target is close, we need to bend!
         else
+            Bend();
+
+        AlignTowardPole();
+        SetPositionsAndRotations();
+    }
+
+    void GetPositions()
+    {
+        //Set current positions from bones
+        for (int i = 0; i < _bones.Length; i++)
+            _bonesPosition[i] = _bones[i].position;
+    }
+
+    void Stretch()
+    {
+        //It can't! -> Stretch leg completely toward target
+        Vector3 direction = (_target.position - _bonesPosition[ROOT_BONE_INDEX]).normalized;
+
+        for (int i = 1; i < _bonesPosition.Length; i++)
+            _bonesPosition[i] = _bonesPosition[i - 1] + direction * _bonesLength[i - 1];
+    }
+
+    void Bend()
+    {
+        for (int iteration = 0; iteration < _maxIterationsPerFrame; iteration++)
         {
-            for (int iteration = 0; iteration < _maxIterationsPerFrame; iteration++)
+            //back -> try to move leg toward target
+            for (int i = _bonesPosition.Length - 1; i > 0; i--)
             {
-                //back -> try to move leg toward target
-                for (int i = _bonesPosition.Length - 1; i > 0; i--)
-                {
-                    //Set leaf bone to target
-                    if (i == _bonesPosition.Length - 1)
-                        _bonesPosition[i] = _target.position;
-                    //Moves bone along direction of previous bone but with correct length
-                    else
-                        _bonesPosition[i] = _bonesPosition[i + 1] + (_bonesPosition[i] - _bonesPosition[i + 1]).normalized * _bonesLength[i];
-                }
-
-                //forward -> Fix so root bone is still attatched to body (Will mess up target but for each iteration it gets better)
-                for (int i = 1; i < _bonesPosition.Length; i++)
-                    _bonesPosition[i] = _bonesPosition[i - 1] + (_bonesPosition[i] - _bonesPosition[i - 1]).normalized * _bonesLength[i - 1];
-
-                //Close enough to target?
-                if ((_bonesPosition[_bonesPosition.Length - 1] - _target.position).sqrMagnitude < _closeEnoughToTargetDelta * _closeEnoughToTargetDelta)
-                    break;
+                //Set leaf bone to target
+                if (i == _bonesPosition.Length - 1)
+                    _bonesPosition[i] = _target.position;
+                //Moves bone along direction of previous bone but with correct length
+                else
+                    _bonesPosition[i] = _bonesPosition[i + 1] + (_bonesPosition[i] - _bonesPosition[i + 1]).normalized * _bonesLength[i];
             }
-        }
 
-        //move towards pole
+            //forward -> Fix so root bone is still attatched to body (Will mess up target but for each iteration it gets better)
+            for (int i = 1; i < _bonesPosition.Length; i++)
+                _bonesPosition[i] = _bonesPosition[i - 1] + (_bonesPosition[i] - _bonesPosition[i - 1]).normalized * _bonesLength[i - 1];
+
+            //Close enough to target?
+            if ((_bonesPosition[_bonesPosition.Length - 1] - _target.position).sqrMagnitude < _closeEnoughToTargetDelta * _closeEnoughToTargetDelta)
+                break;
+        }
+    }
+
+    void AlignTowardPole()
+    {
         if (_pole != null)
         {
             for (int i = 1; i < _bonesPosition.Length - 1; i++)
@@ -132,10 +167,22 @@ public class InverseKinematics : MonoBehaviour
                 _bonesPosition[i] = Quaternion.AngleAxis(angle, plane.normal) * (_bonesPosition[i] - _bonesPosition[i - 1]) + _bonesPosition[i - 1];
             }
         }
+    }
 
+    void SetPositionsAndRotations()
+    {
         //Set calculated positions of bones after calculations
         for (int i = 0; i < _bones.Length; i++)
+        {
+            //Set Rotation
+            if (i == _bonesPosition.Length - 1)
+                _bones[i].rotation = _target.rotation * Quaternion.Inverse(_startRotationTarget) * _startRotationBones[i];
+            else
+                _bones[i].rotation = Quaternion.FromToRotation(_startDirectionSuccesser[i], _bonesPosition[i + 1] - _bonesPosition[i]) * _startRotationBones[i];
+
+            //Set position
             _bones[i].position = _bonesPosition[i];
+        }
     }
 
     private void OnDrawGizmos()
@@ -171,11 +218,3 @@ public class InverseKinematics : MonoBehaviour
         Gizmos.DrawSphere(position, radius);
     }
 }
-
-
-/*
- NOTES:
-
-    Fix on drawqizmos magic numbers! What do they do and add them in inspector under DEBUG!
-    
- */
