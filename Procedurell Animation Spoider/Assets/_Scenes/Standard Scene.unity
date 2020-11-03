@@ -366,6 +366,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 201104834, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668570381, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: test
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 668570381, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugSegmentWidth
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 1725319293425774141, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
       propertyPath: m_Name
       value: Leg

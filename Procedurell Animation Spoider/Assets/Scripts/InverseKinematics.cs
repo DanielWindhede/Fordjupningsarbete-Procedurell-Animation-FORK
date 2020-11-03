@@ -22,7 +22,8 @@ public class InverseKinematics : MonoBehaviour
     [SerializeField] Color _debugTargetColor;
     [SerializeField, Range(0.01f, 10f)] float _debugTargetRadius;
     [SerializeField] Color _debugPoleColor;
-    [SerializeField, Range(0.01f, 10f)] float _debugPoleRadius; 
+    [SerializeField, Range(0.01f, 10f)] float _debugPoleRadius;
+    [SerializeField, Range(0.01f, 10f)] float _debugSegmentWidth;
 
     float[] _bonesLength; //Target to origin
     float _completeLength; //Length of all bone lengths
@@ -141,25 +142,18 @@ public class InverseKinematics : MonoBehaviour
     {
         //Draw target and pole gizmo
         if (_target != null)
-        {
-            Gizmos.color = _debugTargetColor;
-            Gizmos.DrawSphere(_target.position, _debugTargetRadius);
-        }
+            DrawPoint(_target.position, _debugTargetRadius, _debugTargetColor);
         if (_pole != null)
-        {
-            Gizmos.color = _debugPoleColor;
-            Gizmos.DrawSphere(_pole.position, _debugPoleRadius);
-        }
+            DrawPoint(_pole.position, _debugPoleRadius, _debugPoleColor);
 
         //Draws wireframe of legs in editor and bone positions
         Transform current = transform;
         for (int i = 0; i < _chainLength && current != null && current.parent != null; i++)
         {
             //Draw bone gizmo
-            Gizmos.color = _debugBoneColor;
-            Gizmos.DrawSphere(current.position, _debugBonePositionRadius);
+            DrawPoint(current.position, _debugBonePositionRadius, _debugBoneColor);
 
-            float scale = Vector3.Distance(current.position, current.parent.position) * 0.1f;
+            float scale = Vector3.Distance(current.position, current.parent.position) * _debugSegmentWidth;
             //Makes it so the transform operations of wirecube later is from this leg perspective of origin (Or something)
             Handles.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
             Handles.color = Color.green;
@@ -168,8 +162,13 @@ public class InverseKinematics : MonoBehaviour
             current = current.parent;
         }
         //Last bone gizmo
-        Gizmos.color = _debugBoneColor;
-        Gizmos.DrawSphere(current.position, _debugBonePositionRadius);
+        DrawPoint(current.position, _debugBonePositionRadius, _debugBoneColor);
+    }
+
+    void DrawPoint(Vector3 position, float radius, Color color)
+    {
+        Gizmos.color = color;
+        Gizmos.DrawSphere(position, radius);
     }
 }
 
