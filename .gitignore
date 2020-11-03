@@ -2,13 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Mm]emoryCaptures/
+/Procedurell Animation Spoider/[Ll]ibrary/
+/Procedurell Animation Spoider/[Tt]emp/
+/Procedurell Animation Spoider/[Oo]bj/
+/Procedurell Animation Spoider/[Bb]uild/
+/Procedurell Animation Spoider/[Bb]uilds/
+/Procedurell Animation Spoider/[Ll]ogs/
+/Procedurell Animation Spoider/[Mm]emoryCaptures/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
