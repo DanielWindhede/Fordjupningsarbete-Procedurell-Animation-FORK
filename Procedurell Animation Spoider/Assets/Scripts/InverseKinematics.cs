@@ -6,18 +6,23 @@ public class InverseKinematics : MonoBehaviour
     [Header("Drop")]
 
     [SerializeField] Transform _target;
-    //[SerializeField] Transform _pole;
+    [SerializeField] Transform _pole;
 
     [Header("Settings")]
 
-    [SerializeField, Range(0, 10)] int _chainLength = 2;
-    [SerializeField, Range(1, 50)] int _maxIterationsPerFrame = 10;
-    [SerializeField, Range(0.0f, 1f)] float _closeEnoughToTargetDelta = 0.01f;
+    [SerializeField, Range(0, 10)] int _chainLength = 2; //Amount of segments
+    [SerializeField, Range(1, 50)] int _maxIterationsPerFrame = 10; 
+    [SerializeField, Range(0.0f, 1f)] float _closeEnoughToTargetDelta = 0.01f; 
 
     [Header("Debug")]
 
     [SerializeField] Color _debugBoneColor;
     [SerializeField, Range(0.01f, 10f)] float _debugBonePositionRadius;
+
+    [SerializeField] Color _debugTargetColor;
+    [SerializeField, Range(0.01f, 10f)] float _debugTargetRadius;
+    [SerializeField] Color _debugPoleColor;
+    [SerializeField, Range(0.01f, 10f)] float _debugPoleRadius; 
 
     float[] _bonesLength; //Target to origin
     float _completeLength; //Length of all bone lengths
@@ -114,6 +119,19 @@ public class InverseKinematics : MonoBehaviour
             }
         }
 
+        //move towards pole
+        if (_pole != null)
+        {
+            for (int i = 1; i < _bonesPosition.Length - 1; i++)
+            {
+                Plane plane = new Plane(_bonesPosition[i + 1] - _bonesPosition[i - 1], _bonesPosition[i - 1]);
+                Vector3 projectedPole = plane.ClosestPointOnPlane(_pole.position);
+                Vector3 projectedBone = plane.ClosestPointOnPlane(_bonesPosition[i]);
+                float angle = Vector3.SignedAngle(projectedBone - _bonesPosition[i - 1], projectedPole - _bonesPosition[i - 1], plane.normal);
+                _bonesPosition[i] = Quaternion.AngleAxis(angle, plane.normal) * (_bonesPosition[i] - _bonesPosition[i - 1]) + _bonesPosition[i - 1];
+            }
+        }
+
         //Set calculated positions of bones after calculations
         for (int i = 0; i < _bones.Length; i++)
             _bones[i].position = _bonesPosition[i];
@@ -121,7 +139,19 @@ public class InverseKinematics : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Draws wireframe of legs in editor
+        //Draw target and pole gizmo
+        if (_target != null)
+        {
+            Gizmos.color = _debugTargetColor;
+            Gizmos.DrawSphere(_target.position, _debugTargetRadius);
+        }
+        if (_pole != null)
+        {
+            Gizmos.color = _debugPoleColor;
+            Gizmos.DrawSphere(_pole.position, _debugPoleRadius);
+        }
+
+        //Draws wireframe of legs in editor and bone positions
         Transform current = transform;
         for (int i = 0; i < _chainLength && current != null && current.parent != null; i++)
         {
