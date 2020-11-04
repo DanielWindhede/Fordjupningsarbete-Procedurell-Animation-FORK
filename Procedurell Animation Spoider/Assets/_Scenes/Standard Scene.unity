@@ -366,6 +366,106 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugBoneColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugBoneColor.g
+      value: 0.14433026
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugBoneColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugBoneColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugTargetRadius
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugTargetColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugTargetColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugTargetColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugTargetColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _showBones
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugPoleColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugPoleColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugPoleColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugPoleColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugPoleRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugBonePositionRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _showLegs
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _showLegsWireframes
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugLegColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugLegColor.g
+      value: 0.9822674
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugLegColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugLegColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _debugSegmentWidth
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _showTargets
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
+      propertyPath: _showPoles
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1725319293425774141, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
       propertyPath: m_Name
       value: Spider

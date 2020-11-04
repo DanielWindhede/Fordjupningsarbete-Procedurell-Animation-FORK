@@ -14,19 +14,6 @@ public class InverseKinematics : MonoBehaviour
     [SerializeField, Range(1, 50)] int _maxIterationsPerFrame = 10; 
     [SerializeField, Range(0.0f, 1f)] float _closeEnoughToTargetDelta = 0.01f; 
 
-    [Header("Debug")]
-
-    [SerializeField] Color _debugBoneColor;
-    [SerializeField, Range(0.01f, 10f)] float _debugBonePositionRadius;
-
-    [SerializeField] Color _debugTargetColor;
-    [SerializeField, Range(0.01f, 10f)] float _debugTargetRadius;
-    [SerializeField] Color _debugPoleColor;
-    [SerializeField, Range(0.01f, 10f)] float _debugPoleRadius;
-    [SerializeField, Range(0.01f, 10f)] float _debugSegmentWidth;
-    [SerializeField] Color _debugLegColor;
-    [SerializeField] Color _debugLegWireframeColor = Color.white;
-
     float[] _bonesLength; //Target to origin
     float _completeLength; //Length of all bone lengths
     Transform[] _bones;
@@ -39,10 +26,18 @@ public class InverseKinematics : MonoBehaviour
     Quaternion _startRotationRoot;
 
     readonly int ROOT_BONE_INDEX = 0;
+    SpiderDebug _spiderDebugScript;
 
     private void Awake()
     {
+        _spiderDebugScript = GetComponentInParent<SpiderDebug>();
         Init();
+    }
+
+    private void OnValidate()
+    {
+        //Needed to show gizmos in inspector
+        _spiderDebugScript = GetComponentInParent<SpiderDebug>();
     }
 
     void Init()
@@ -191,35 +186,44 @@ public class InverseKinematics : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Draw target and pole gizmo
-        if (_target != null)
-            DrawPoint(_target.position, _debugTargetRadius, _debugTargetColor);
-        if (_pole != null)
-            DrawPoint(_pole.position, _debugPoleRadius, _debugPoleColor);
-
-        //Draws wireframe of legs in editor and bone positions
-        Transform current = transform;
-        for (int i = 0; i < _chainLength && current != null && current.parent != null; i++)
+        if (_spiderDebugScript != null)
         {
-            //Draw bone gizmo
-            DrawPoint(current.position, _debugBonePositionRadius, _debugBoneColor);
+            //Draw target and pole gizmo
+            if (_target != null && _spiderDebugScript.ShowTargets)
+                DrawPoint(_target.position, _spiderDebugScript.DebugTargetRadius, _spiderDebugScript.DebugTargetColor);
+            if (_pole != null && _spiderDebugScript.ShowPoles)
+                DrawPoint(_pole.position, _spiderDebugScript.DebugPoleRadius, _spiderDebugScript.DebugPoleColor);
 
-            float scale = Vector3.Distance(current.position, current.parent.position) * _debugSegmentWidth;
-            //Makes it so the transform operations of wirecube later is from this leg perspective of origin (Or something)
-            Matrix4x4 matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
-            Handles.matrix = matrix;
-            Handles.color = _debugLegWireframeColor;
-            Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
+            //Draws wireframe of legs in editor and bone positions
+            Transform current = transform;
+            for (int i = 0; i < _chainLength && current != null && current.parent != null; i++)
+            {
+                //Draw bone gizmo
+                if (_spiderDebugScript.ShowBones)
+                    DrawPoint(current.position, _spiderDebugScript.DebugBonePositionRadius, _spiderDebugScript.DebugBoneColor);
 
-            Gizmos.matrix = matrix;
-            Gizmos.color = _debugLegColor;
-            Gizmos.DrawCube(Vector3.up * 0.5f, Vector3.one);
-            Gizmos.matrix = Matrix4x4.identity;
+                float scale = Vector3.Distance(current.position, current.parent.position) * _spiderDebugScript.DebugSegmentWidth;
+                //Makes it so the transform operations of wirecube later is from this leg perspective of origin (Or something)
+                Matrix4x4 matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
+                Handles.matrix = matrix;
+                Handles.color = _spiderDebugScript.DebugLegWireframeColor;
+                if (_spiderDebugScript.ShowLegsWireframes)
+                    Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
 
-            current = current.parent;
+                Gizmos.matrix = matrix;
+                Gizmos.color = _spiderDebugScript.DebugLegColor;
+
+                if (_spiderDebugScript.ShowLegs)
+                    Gizmos.DrawCube(Vector3.up * 0.5f, Vector3.one);
+
+                Gizmos.matrix = Matrix4x4.identity;
+
+                current = current.parent;
+            }
+            //Last bone gizmo
+            if (_spiderDebugScript.ShowBones)
+                DrawPoint(current.position, _spiderDebugScript.DebugBonePositionRadius, _spiderDebugScript.DebugBoneColor);
         }
-        //Last bone gizmo
-        DrawPoint(current.position, _debugBonePositionRadius, _debugBoneColor);
     }
 
     void DrawPoint(Vector3 position, float radius, Color color)
