@@ -187,7 +187,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &1246963855
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,7 +570,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &272770501327415702
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,7 +1117,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &1403097428047020661
 GameObject:
   m_ObjectHideFlags: 0
@@ -2185,7 +2188,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &4901908152429443216
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,7 +2570,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &5505260668787065792
 GameObject:
   m_ObjectHideFlags: 0
@@ -3150,7 +3155,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &6977833243242891829
 GameObject:
   m_ObjectHideFlags: 0
@@ -3480,7 +3486,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &7545905683386758177
 GameObject:
   m_ObjectHideFlags: 0
@@ -3793,7 +3800,8 @@ MonoBehaviour:
   _debugTargetRadius: 0.1
   _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
   _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0
+  _debugSegmentWidth: 0.075
+  _debugLegColor: {r: 0.18867922, g: 0.06835171, b: 0.06835171, a: 1}
 --- !u!1 &8841082025748967297
 GameObject:
   m_ObjectHideFlags: 0

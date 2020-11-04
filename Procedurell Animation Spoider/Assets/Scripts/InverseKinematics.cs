@@ -24,6 +24,8 @@ public class InverseKinematics : MonoBehaviour
     [SerializeField] Color _debugPoleColor;
     [SerializeField, Range(0.01f, 10f)] float _debugPoleRadius;
     [SerializeField, Range(0.01f, 10f)] float _debugSegmentWidth;
+    [SerializeField] Color _debugLegColor;
+    [SerializeField] Color _debugLegWireframeColor = Color.white;
 
     float[] _bonesLength; //Target to origin
     float _completeLength; //Length of all bone lengths
@@ -204,9 +206,15 @@ public class InverseKinematics : MonoBehaviour
 
             float scale = Vector3.Distance(current.position, current.parent.position) * _debugSegmentWidth;
             //Makes it so the transform operations of wirecube later is from this leg perspective of origin (Or something)
-            Handles.matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
-            Handles.color = Color.green;
+            Matrix4x4 matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
+            Handles.matrix = matrix;
+            Handles.color = _debugLegWireframeColor;
             Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
+
+            Gizmos.matrix = matrix;
+            Gizmos.color = _debugLegColor;
+            Gizmos.DrawCube(Vector3.up * 0.5f, Vector3.one);
+            Gizmos.matrix = Matrix4x4.identity;
 
             current = current.parent;
         }
