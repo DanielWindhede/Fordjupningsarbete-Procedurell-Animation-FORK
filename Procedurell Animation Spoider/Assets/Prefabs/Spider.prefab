@@ -1861,15 +1861,15 @@ MonoBehaviour:
   _showLegs: 1
   _showTargets: 1
   _showPoles: 1
-  _debugBoneColor: {r: 0, g: 0.14433026, b: 1, a: 1}
-  _debugPoleColor: {r: 1, g: 0, b: 1, a: 1}
-  _debugLegColor: {r: 1, g: 0.9822674, b: 0, a: 1}
-  _debugTargetColor: {r: 1, g: 0, b: 0, a: 1}
-  _debugLegWireframeColor: {r: 1, g: 1, b: 1, a: 1}
-  _debugBonePositionRadius: 0.1
-  _debugTargetRadius: 0.15
-  _debugPoleRadius: 0.1
-  _debugSegmentWidth: 0.15
+  _BoneColor: {r: 0, g: 0, b: 1, a: 1}
+  _PoleColor: {r: 1, g: 0, b: 1, a: 1}
+  _LegColor: {r: 1, g: 0.9968063, b: 0, a: 1}
+  _TargetColor: {r: 1, g: 0, b: 0, a: 1}
+  _LegWireframeColor: {r: 1, g: 1, b: 1, a: 1}
+  _BonePositionRadius: 0.1
+  _TargetRadius: 0.15
+  _PoleRadius: 0.1
+  _SegmentWidth: 0.15
 --- !u!1 &1968615438906232731
 GameObject:
   m_ObjectHideFlags: 0

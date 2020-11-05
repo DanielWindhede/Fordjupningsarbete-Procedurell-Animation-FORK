@@ -190,9 +190,9 @@ public class InverseKinematics : MonoBehaviour
         {
             //Draw target and pole gizmo
             if (_target != null && _spiderDebugScript.ShowTargets)
-                DrawPoint(_target.position, _spiderDebugScript.DebugTargetRadius, _spiderDebugScript.DebugTargetColor);
+                DrawPoint(_target.position, _spiderDebugScript.TargetRadius, _spiderDebugScript.TargetColor);
             if (_pole != null && _spiderDebugScript.ShowPoles)
-                DrawPoint(_pole.position, _spiderDebugScript.DebugPoleRadius, _spiderDebugScript.DebugPoleColor);
+                DrawPoint(_pole.position, _spiderDebugScript.PoleRadius, _spiderDebugScript.PoleColor);
 
             //Draws wireframe of legs in editor and bone positions
             Transform current = transform;
@@ -200,18 +200,18 @@ public class InverseKinematics : MonoBehaviour
             {
                 //Draw bone gizmo
                 if (_spiderDebugScript.ShowBones)
-                    DrawPoint(current.position, _spiderDebugScript.DebugBonePositionRadius, _spiderDebugScript.DebugBoneColor);
+                    DrawPoint(current.position, _spiderDebugScript.BonePositionRadius, _spiderDebugScript.BoneColor);
 
-                float scale = Vector3.Distance(current.position, current.parent.position) * _spiderDebugScript.DebugSegmentWidth;
+                float scale = Vector3.Distance(current.position, current.parent.position) * _spiderDebugScript.SegmentWidth;
                 //Makes it so the transform operations of wirecube later is from this leg perspective of origin (Or something)
                 Matrix4x4 matrix = Matrix4x4.TRS(current.position, Quaternion.FromToRotation(Vector3.up, current.parent.position - current.position), new Vector3(scale, Vector3.Distance(current.parent.position, current.position), scale));
                 Handles.matrix = matrix;
-                Handles.color = _spiderDebugScript.DebugLegWireframeColor;
+                Handles.color = _spiderDebugScript.LegWireframeColor;
                 if (_spiderDebugScript.ShowLegsWireframes)
                     Handles.DrawWireCube(Vector3.up * 0.5f, Vector3.one);
 
                 Gizmos.matrix = matrix;
-                Gizmos.color = _spiderDebugScript.DebugLegColor;
+                Gizmos.color = _spiderDebugScript.LegColor;
 
                 if (_spiderDebugScript.ShowLegs)
                     Gizmos.DrawCube(Vector3.up * 0.5f, Vector3.one);
@@ -222,7 +222,7 @@ public class InverseKinematics : MonoBehaviour
             }
             //Last bone gizmo
             if (_spiderDebugScript.ShowBones)
-                DrawPoint(current.position, _spiderDebugScript.DebugBonePositionRadius, _spiderDebugScript.DebugBoneColor);
+                DrawPoint(current.position, _spiderDebugScript.BonePositionRadius, _spiderDebugScript.BoneColor);
         }
     }
 

@@ -14,31 +14,31 @@ public class SpiderDebug : MonoBehaviour
 
     [Header("Debug Settings")]
 
-    [SerializeField] Color _debugBoneColor;
-    [SerializeField] Color _debugPoleColor;
-    [SerializeField] Color _debugLegColor;
-    [SerializeField] Color _debugTargetColor;
-    [SerializeField] Color _debugLegWireframeColor = Color.white;
+    [SerializeField] Color _BoneColor;
+    [SerializeField] Color _PoleColor;
+    [SerializeField] Color _LegColor;
+    [SerializeField] Color _TargetColor;
+    [SerializeField] Color _LegWireframeColor = Color.white;
 
-    [SerializeField, Range(0.01f, 10f)] float _debugBonePositionRadius;
-    [SerializeField, Range(0.01f, 10f)] float _debugTargetRadius;
-    [SerializeField, Range(0.01f, 10f)] float _debugPoleRadius;
-    [SerializeField, Range(0.01f, 10f)] float _debugSegmentWidth;
+    [SerializeField, Range(0.01f, 10f)] float _BonePositionRadius;
+    [SerializeField, Range(0.01f, 10f)] float _TargetRadius;
+    [SerializeField, Range(0.01f, 10f)] float _PoleRadius;
+    [SerializeField, Range(0.01f, 10f)] float _SegmentWidth;
 
-    public bool ShowBones                { get { return _showBones; } }
-    public bool ShowLegsWireframes       { get { return _showLegsWireframes; } }
-    public bool ShowLegs                 { get { return _showLegs; } }
-    public bool ShowTargets              { get { return _showTargets; } }
-    public bool ShowPoles                { get { return _showPoles; } }
+    public bool ShowBones           { get { return _showBones; } }
+    public bool ShowLegsWireframes  { get { return _showLegsWireframes; } }
+    public bool ShowLegs            { get { return _showLegs; } }
+    public bool ShowTargets         { get { return _showTargets; } }
+    public bool ShowPoles           { get { return _showPoles; } }
 
-    public Color DebugBoneColor          { get { return _debugBoneColor; } }
-    public Color DebugPoleColor          { get { return _debugPoleColor; } }
-    public Color DebugLegColor           { get { return _debugLegColor; } }
-    public Color DebugTargetColor        { get { return _debugTargetColor; } }
-    public Color DebugLegWireframeColor  { get { return _debugLegWireframeColor; } }
+    public Color BoneColor          { get { return _BoneColor; } }
+    public Color PoleColor          { get { return _PoleColor; } }
+    public Color LegColor           { get { return _LegColor; } }
+    public Color TargetColor        { get { return _TargetColor; } }
+    public Color LegWireframeColor  { get { return _LegWireframeColor; } }
 
-    public float DebugBonePositionRadius { get { return _debugBonePositionRadius; } }
-    public float DebugTargetRadius       { get { return _debugTargetRadius; } }
-    public float DebugPoleRadius         { get { return _debugPoleRadius; } }
-    public float DebugSegmentWidth       { get { return _debugSegmentWidth; } }
+    public float BonePositionRadius { get { return _BonePositionRadius; } }
+    public float TargetRadius       { get { return _TargetRadius; } }
+    public float PoleRadius         { get { return _PoleRadius; } }
+    public float SegmentWidth       { get { return _SegmentWidth; } }
 }
