@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class SpiderDebug : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class SpiderDebug : MonoBehaviour
 
     [Header("Debug Settings")]
 
+    [SerializeField] Vector3 _moveSpiderHandleStartPosition;
+
     [SerializeField] Color _BoneColor;
     [SerializeField] Color _PoleColor;
     [SerializeField] Color _LegColor;
@@ -25,20 +28,55 @@ public class SpiderDebug : MonoBehaviour
     [SerializeField, Range(0.01f, 10f)] float _PoleRadius;
     [SerializeField, Range(0.01f, 10f)] float _SegmentWidth;
 
-    public bool ShowBones           { get { return _showBones; } }
-    public bool ShowLegsWireframes  { get { return _showLegsWireframes; } }
-    public bool ShowLegs            { get { return _showLegs; } }
-    public bool ShowTargets         { get { return _showTargets; } }
-    public bool ShowPoles           { get { return _showPoles; } }
+    [Header("Drop")]
 
-    public Color BoneColor          { get { return _BoneColor; } }
-    public Color PoleColor          { get { return _PoleColor; } }
-    public Color LegColor           { get { return _LegColor; } }
-    public Color TargetColor        { get { return _TargetColor; } }
-    public Color LegWireframeColor  { get { return _LegWireframeColor; } }
+    [SerializeField] Transform[] _moveSpiderTransforms;
 
-    public float BonePositionRadius { get { return _BonePositionRadius; } }
-    public float TargetRadius       { get { return _TargetRadius; } }
-    public float PoleRadius         { get { return _PoleRadius; } }
-    public float SegmentWidth       { get { return _SegmentWidth; } }
+    Vector3[] _moveSpiderOffsets;
+    Vector3 _currentMoveSpiderAxis;
+
+    public bool ShowBones                        { get { return _showBones; } }
+    public bool ShowLegsWireframes               { get { return _showLegsWireframes; } }
+    public bool ShowLegs                         { get { return _showLegs; } }
+    public bool ShowTargets                      { get { return _showTargets; } }
+    public bool ShowPoles                        { get { return _showPoles; } }
+
+    public Vector3 MoveSpiderHandleStartPosition { get { return _moveSpiderHandleStartPosition; } }
+    public Vector3 CurrentMoveSpiderAxisPosition { get { return _currentMoveSpiderAxis; } set { _currentMoveSpiderAxis = value; } }
+
+    public Color BoneColor                       { get { return _BoneColor; } }
+    public Color PoleColor                       { get { return _PoleColor; } }
+    public Color LegColor                        { get { return _LegColor; } }
+    public Color TargetColor                     { get { return _TargetColor; } }
+    public Color LegWireframeColor               { get { return _LegWireframeColor; } }
+                                                 
+    public float BonePositionRadius              { get { return _BonePositionRadius; } }
+    public float TargetRadius                    { get { return _TargetRadius; } }
+    public float PoleRadius                      { get { return _PoleRadius; } }
+    public float SegmentWidth                    { get { return _SegmentWidth; } }
+
+    private void Awake()
+    {
+        SetupMoveSpider();
+    }
+
+    private void OnValidated()
+    {
+        SetupMoveSpider();
+    }
+
+    void SetupMoveSpider()
+    {
+        _currentMoveSpiderAxis = _moveSpiderHandleStartPosition;
+
+        _moveSpiderOffsets = new Vector3[_moveSpiderTransforms.Length];
+        for (int i = 0; i < _moveSpiderTransforms.Length; i++)
+            _moveSpiderOffsets[i] = _moveSpiderHandleStartPosition - _moveSpiderTransforms[i].position;
+    }
+
+    public void MoveSpider(Vector3 axisPosition)
+    {
+        for (int i = 0; i < _moveSpiderTransforms.Length; i++)
+            _moveSpiderTransforms[i].position = axisPosition - _moveSpiderOffsets[i];
+    }
 }
