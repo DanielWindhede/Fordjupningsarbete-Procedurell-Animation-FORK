@@ -10,22 +10,23 @@ public class InverseKinematics : MonoBehaviour
 
     [Header("Settings")]
 
+    [SerializeField, Range(0, 1000)] int _index;
     [SerializeField, Range(0, 10)] int _chainLength = 2; //Amount of segments
     [SerializeField, Range(1, 50)] int _maxIterationsPerFrame = 10; 
     [SerializeField, Range(0.0f, 1f)] float _closeEnoughToTargetDelta = 0.01f; 
 
-    float[] _bonesLength; //Target to origin
-    float _completeLength; //Length of all bone lengths
-    Transform[] _bones;
-    Vector3[] _bonesPosition; //Safer to do math seperately from bone positions directly
+    float[] _jointsLength; //Target to origin
+    float _completeLength; //Length of all joint lengths
+    Transform[] _joints;
+    Vector3[] _jointsPosition; //Safer to do math seperately from joint positions directly
 
     //Rotation stuff
     Vector3[] _startDirectionSuccesser;
-    Quaternion[] _startRotationBones;
+    Quaternion[] _startRotationJoints;
     Quaternion _startRotationTarget;
     Quaternion _startRotationRoot;
 
-    readonly int ROOT_BONE_INDEX = 0;
+    readonly int ROOT_JOINT_INDEX = 0;
     SpiderDebug _spiderDebugScript;
 
     private void Awake()
@@ -40,35 +41,38 @@ public class InverseKinematics : MonoBehaviour
         _spiderDebugScript = GetComponentInParent<SpiderDebug>();
     }
 
+    public Vector3 RootJointPosition { get { return _joints[ROOT_JOINT_INDEX].position; } }
+    public Vector3 LeafJointPosition { get { return _joints[_joints.Length - 1].position; } }
+
     void Init()
     {
-        _bones = new Transform[_chainLength + 1]; //Always one more bone per chain length
-        _bonesPosition = new Vector3[_chainLength + 1];
-        _bonesLength = new float[_chainLength];
+        _joints = new Transform[_chainLength + 1]; //Always one more joint per chain length
+        _jointsPosition = new Vector3[_chainLength + 1];
+        _jointsLength = new float[_chainLength];
 
         _startDirectionSuccesser = new Vector3[_chainLength + 1];
-        _startRotationBones = new Quaternion[_chainLength + 1];
+        _startRotationJoints = new Quaternion[_chainLength + 1];
         _startRotationTarget = _target.rotation;
 
         _completeLength = 0;
 
-        //init bone transforms
+        //init joint transforms
         Transform current = transform;
-        for (int i = _bones.Length - 1; i >= 0; i--)
+        for (int i = _joints.Length - 1; i >= 0; i--)
         {
-            _bones[i] = current;
-            _startRotationBones[i] = current.rotation;
+            _joints[i] = current;
+            _startRotationJoints[i] = current.rotation;
 
-            //End bone/leaf bone
-            if (i == _bones.Length - 1)
+            //End joint/leaf joint
+            if (i == _joints.Length - 1)
                 _startDirectionSuccesser[i] = _target.position - current.position;
-            //Mid-bone (not end bone)
+            //Mid-joint (not end joint)
             else
             {
-                _startDirectionSuccesser[i] = _bones[i + 1].position - current.position;
-                //Calculate bone length
-                _bonesLength[i] = (_bones[i + 1].position - current.position).magnitude;
-                _completeLength += _bonesLength[i];
+                _startDirectionSuccesser[i] = _joints[i + 1].position - current.position;
+                //Calculate joint length
+                _jointsLength[i] = (_joints[i + 1].position - current.position).magnitude;
+                _completeLength += _jointsLength[i];
             }
 
             current = current.parent;
@@ -87,12 +91,12 @@ public class InverseKinematics : MonoBehaviour
 
         GetPositions();
 
-        Quaternion rootRotation = (_bones[ROOT_BONE_INDEX].parent != null) ? _bones[ROOT_BONE_INDEX].parent.rotation : Quaternion.identity;
+        Quaternion rootRotation = (_joints[ROOT_JOINT_INDEX].parent != null) ? _joints[ROOT_JOINT_INDEX].parent.rotation : Quaternion.identity;
         Quaternion rootRotationDifference = rootRotation * Quaternion.Inverse(_startRotationRoot);
 
-        //Can leg reach target? Distance from root bone to target compared with total leg length
+        //Can leg reach target? Distance from root joint to target compared with total leg length
         //SqrMag is faster than mag 
-        if ((_target.position - _bones[ROOT_BONE_INDEX].position).sqrMagnitude >= _completeLength * _completeLength)
+        if ((_target.position - _joints[ROOT_JOINT_INDEX].position).sqrMagnitude >= _completeLength * _completeLength)
             Stretch(); //It can't! -> Stretch leg completely toward target
         else
             Bend(); //Target is close, we need to bend!
@@ -111,7 +115,7 @@ public class InverseKinematics : MonoBehaviour
         }
 
         //If changes are made in inspector at runtime -> Init again!
-        if (_bonesLength.Length != _chainLength)
+        if (_jointsLength.Length != _chainLength)
             Init();
 
         return true;
@@ -119,17 +123,17 @@ public class InverseKinematics : MonoBehaviour
 
     void GetPositions()
     {
-        //Set current positions from bones
-        for (int i = 0; i < _bones.Length; i++)
-            _bonesPosition[i] = _bones[i].position;
+        //Set current positions from joints
+        for (int i = 0; i < _joints.Length; i++)
+            _jointsPosition[i] = _joints[i].position;
     }
 
     void Stretch()
     {
-        Vector3 direction = (_target.position - _bonesPosition[ROOT_BONE_INDEX]).normalized;
+        Vector3 direction = (_target.position - _jointsPosition[ROOT_JOINT_INDEX]).normalized;
 
-        for (int i = 1; i < _bonesPosition.Length; i++)
-            _bonesPosition[i] = _bonesPosition[i - 1] + direction * _bonesLength[i - 1];
+        for (int i = 1; i < _jointsPosition.Length; i++)
+            _jointsPosition[i] = _jointsPosition[i - 1] + direction * _jointsLength[i - 1];
     }
 
     void Bend()
@@ -137,22 +141,22 @@ public class InverseKinematics : MonoBehaviour
         for (int iteration = 0; iteration < _maxIterationsPerFrame; iteration++)
         {
             //back -> try to move leg toward target
-            for (int i = _bonesPosition.Length - 1; i > 0; i--)
+            for (int i = _jointsPosition.Length - 1; i > 0; i--)
             {
-                //Set leaf bone to target
-                if (i == _bonesPosition.Length - 1)
-                    _bonesPosition[i] = _target.position;
-                //Moves bone along direction of previous bone but with correct length
+                //Set leaf joint to target
+                if (i == _jointsPosition.Length - 1)
+                    _jointsPosition[i] = _target.position;
+                //Moves joint along direction of previous joint but with correct length
                 else
-                    _bonesPosition[i] = _bonesPosition[i + 1] + (_bonesPosition[i] - _bonesPosition[i + 1]).normalized * _bonesLength[i];
+                    _jointsPosition[i] = _jointsPosition[i + 1] + (_jointsPosition[i] - _jointsPosition[i + 1]).normalized * _jointsLength[i];
             }
 
-            //forward -> Fix so root bone is still attatched to body (Will mess up target but for each iteration it gets better)
-            for (int i = 1; i < _bonesPosition.Length; i++)
-                _bonesPosition[i] = _bonesPosition[i - 1] + (_bonesPosition[i] - _bonesPosition[i - 1]).normalized * _bonesLength[i - 1];
+            //forward -> Fix so root joint is still attatched to body (Will mess up target but for each iteration it gets better)
+            for (int i = 1; i < _jointsPosition.Length; i++)
+                _jointsPosition[i] = _jointsPosition[i - 1] + (_jointsPosition[i] - _jointsPosition[i - 1]).normalized * _jointsLength[i - 1];
 
             //Close enough to target?
-            if ((_bonesPosition[_bonesPosition.Length - 1] - _target.position).sqrMagnitude < _closeEnoughToTargetDelta * _closeEnoughToTargetDelta)
+            if ((_jointsPosition[_jointsPosition.Length - 1] - _target.position).sqrMagnitude < _closeEnoughToTargetDelta * _closeEnoughToTargetDelta)
                 break;
         }
     }
@@ -161,30 +165,30 @@ public class InverseKinematics : MonoBehaviour
     {
         if (_pole != null)
         {
-            for (int i = 1; i < _bonesPosition.Length - 1; i++)
+            for (int i = 1; i < _jointsPosition.Length - 1; i++)
             {
-                Plane plane = new Plane(_bonesPosition[i + 1] - _bonesPosition[i - 1], _bonesPosition[i - 1]);
+                Plane plane = new Plane(_jointsPosition[i + 1] - _jointsPosition[i - 1], _jointsPosition[i - 1]);
                 Vector3 projectedPole = plane.ClosestPointOnPlane(_pole.position);
-                Vector3 projectedBone = plane.ClosestPointOnPlane(_bonesPosition[i]);
-                float angle = Vector3.SignedAngle(projectedBone - _bonesPosition[i - 1], projectedPole - _bonesPosition[i - 1], plane.normal);
-                _bonesPosition[i] = Quaternion.AngleAxis(angle, plane.normal) * (_bonesPosition[i] - _bonesPosition[i - 1]) + _bonesPosition[i - 1];
+                Vector3 projectedJoint = plane.ClosestPointOnPlane(_jointsPosition[i]);
+                float angle = Vector3.SignedAngle(projectedJoint - _jointsPosition[i - 1], projectedPole - _jointsPosition[i - 1], plane.normal);
+                _jointsPosition[i] = Quaternion.AngleAxis(angle, plane.normal) * (_jointsPosition[i] - _jointsPosition[i - 1]) + _jointsPosition[i - 1];
             }
         }
     }
 
     void SetPositionsAndRotations()
     {
-        //Set calculated positions of bones after calculations
-        for (int i = 0; i < _bones.Length; i++)
+        //Set calculated positions of joints after calculations
+        for (int i = 0; i < _joints.Length; i++)
         {
             //Set Rotation
-            if (i == _bonesPosition.Length - 1)
-                _bones[i].rotation = _target.rotation * Quaternion.Inverse(_startRotationTarget) * _startRotationBones[i];
+            if (i == _jointsPosition.Length - 1)
+                _joints[i].rotation = _target.rotation * Quaternion.Inverse(_startRotationTarget) * _startRotationJoints[i];
             else
-                _bones[i].rotation = Quaternion.FromToRotation(_startDirectionSuccesser[i], _bonesPosition[i + 1] - _bonesPosition[i]) * _startRotationBones[i];
+                _joints[i].rotation = Quaternion.FromToRotation(_startDirectionSuccesser[i], _jointsPosition[i + 1] - _jointsPosition[i]) * _startRotationJoints[i];
 
             //Set position
-            _bones[i].position = _bonesPosition[i];
+            _joints[i].position = _jointsPosition[i];
         }
     }
 
@@ -198,13 +202,13 @@ public class InverseKinematics : MonoBehaviour
             if (_pole != null && _spiderDebugScript.ShowPoles)
                 DrawPoint(_pole.position, _spiderDebugScript.PoleRadius, _spiderDebugScript.PoleColor);
 
-            //Draws wireframe of legs in editor and bone positions
+            //Draws wireframe of legs in editor and joint positions
             Transform current = transform;
             for (int i = 0; i < _chainLength && current != null && current.parent != null; i++)
             {
-                //Draw bone gizmo
-                if (_spiderDebugScript.ShowBones)
-                    DrawPoint(current.position, _spiderDebugScript.BonePositionRadius, _spiderDebugScript.BoneColor);
+                //Draw joint gizmo
+                if (_spiderDebugScript.ShowJoints)
+                    DrawPoint(current.position, _spiderDebugScript.JointPositionRadius, _spiderDebugScript.JointColor);
 
                 float scale = Vector3.Distance(current.position, current.parent.position) * _spiderDebugScript.SegmentWidth;
                 //Makes it so the transform operations of wirecube later is from this leg perspective of origin (Or something)
@@ -224,9 +228,9 @@ public class InverseKinematics : MonoBehaviour
 
                 current = current.parent;
             }
-            //Last bone gizmo
-            if (_spiderDebugScript.ShowBones)
-                DrawPoint(current.position, _spiderDebugScript.BonePositionRadius, _spiderDebugScript.BoneColor);
+            //Last joint gizmo
+            if (_spiderDebugScript.ShowJoints)
+                DrawPoint(current.position, _spiderDebugScript.JointPositionRadius, _spiderDebugScript.JointColor);
         }
     }
 
