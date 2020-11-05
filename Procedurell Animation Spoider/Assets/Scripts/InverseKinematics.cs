@@ -82,7 +82,9 @@ public class InverseKinematics : MonoBehaviour
 
     void DoInverseKinematics()
     {
-        PreRunCheck();
+        if (!PreRunCheck())
+            return;
+
         GetPositions();
 
         Quaternion rootRotation = (_bones[ROOT_BONE_INDEX].parent != null) ? _bones[ROOT_BONE_INDEX].parent.rotation : Quaternion.identity;
@@ -99,18 +101,20 @@ public class InverseKinematics : MonoBehaviour
         SetPositionsAndRotations();
     }
 
-    void PreRunCheck()
+    bool PreRunCheck()
     {
         //Can't do anything just return with error
         if (_target == null)
         {
             Debug.LogError("No target is set!");
-            return;
+            return false;
         }
 
         //If changes are made in inspector at runtime -> Init again!
         if (_bonesLength.Length != _chainLength)
             Init();
+
+        return true;
     }
 
     void GetPositions()
