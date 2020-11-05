@@ -26,6 +26,8 @@ public class InverseKinematics : MonoBehaviour
     Quaternion _startRotationTarget;
     Quaternion _startRotationRoot;
 
+    Vector3 _startPosition;
+
     readonly int ROOT_JOINT_INDEX = 0;
     SpiderDebug _spiderDebugScript;
 
@@ -77,11 +79,20 @@ public class InverseKinematics : MonoBehaviour
 
             current = current.parent;
         }
+
+        _startPosition = _joints[ROOT_JOINT_INDEX].localPosition;
     }
 
     public void SetTargetPosition(Vector3 newTargetPosition)
     {
         _target.position = newTargetPosition;
+    }
+
+    public void Rotate(Vector3 pivot, Quaternion rotation)
+    {
+        Vector3 direction = _startPosition;
+        direction = rotation * direction;
+        _joints[ROOT_JOINT_INDEX].position = direction + pivot;
     }
 
     private void Update()

@@ -41,15 +41,22 @@ public class Leg
         if (_currentMoveFraction >= 1.0f)
             Moving = false;
     }
+
+    public void Rotate(Vector3 pivot, Quaternion rotation)
+    {
+        _inverseKinematics.Rotate(pivot, rotation);
+    }
 }
 
 public class MoveSpider : MonoBehaviour
 {
+    [SerializeField] Transform _body;
     [SerializeField, Range(0.01f, 100f)] float _moveSpeed = 1f;
     [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
     [SerializeField] List<Leg> _legs;
 
     bool _isRunning = false;
+    Quaternion _lastRotation;
 
     SpiderDebug _spiderDebugScript;
 
@@ -57,6 +64,7 @@ public class MoveSpider : MonoBehaviour
     {
         _spiderDebugScript = GetComponent<SpiderDebug>();
         Leg.MoveSpeed = _moveSpeed;
+        _lastRotation = _body.localRotation;
         _isRunning = true;
     }
 
@@ -73,7 +81,12 @@ public class MoveSpider : MonoBehaviour
                 _legs[i].StartMoving();
             if (_legs[i].Moving)
                 _legs[i].Move();
+
+            if (_lastRotation != _body.localRotation)
+                _legs[i].Rotate(_body.transform.position, _body.transform.localRotation);
         }
+
+        _lastRotation = _body.localRotation;
     }
 
     private void OnDrawGizmos()
