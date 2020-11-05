@@ -89,7 +89,7 @@ public class InverseKinematics : MonoBehaviour
         DoInverseKinematics();
     }
 
-    void DoInverseKinematics()
+    public void DoInverseKinematics()
     {
         if (!PreRunCheck())
             return;

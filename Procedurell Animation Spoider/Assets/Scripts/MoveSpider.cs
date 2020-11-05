@@ -9,19 +9,43 @@ public class Leg
     [SerializeField] LegTarget _legTarget;
     [SerializeField] InverseKinematics _inverseKinematics;
 
+    Vector3 _startMovingJointPosition;
+    float _currentMoveFraction;
+
+    public static float MoveSpeed { get; set; }
+
     public Vector3 LeafJointPosition { get { return _inverseKinematics.LeafJointPosition; } }
     public Vector3 TargetPosition { get { return _legTarget.Position; } }
+    public bool Moving { get; private set; }
 
     public float SqrDistance { get { return (LeafJointPosition - TargetPosition).sqrMagnitude; } }
 
-    public void MoveTarget()
+    public void UpdateInverseKinematics()
     {
-        _inverseKinematics.SetTargetPosition(TargetPosition);
+        _inverseKinematics.DoInverseKinematics();
+    }
+
+    public void StartMoving()
+    {
+        Moving = true;
+        _startMovingJointPosition = LeafJointPosition;
+        _currentMoveFraction = 0;
+    }
+
+    public void Move()
+    {
+        _currentMoveFraction += Time.deltaTime * MoveSpeed;
+        Vector3 newPosition = Vector3.Lerp(_startMovingJointPosition, TargetPosition, _currentMoveFraction);
+        _inverseKinematics.SetTargetPosition(newPosition);
+
+        if (_currentMoveFraction >= 1.0f)
+            Moving = false;
     }
 }
 
 public class MoveSpider : MonoBehaviour
 {
+    [SerializeField, Range(0.01f, 100f)] float _moveSpeed = 1f;
     [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
     [SerializeField] List<Leg> _legs;
 
@@ -32,6 +56,7 @@ public class MoveSpider : MonoBehaviour
     private void Awake()
     {
         _spiderDebugScript = GetComponent<SpiderDebug>();
+        Leg.MoveSpeed = _moveSpeed;
         _isRunning = true;
     }
 
@@ -44,8 +69,10 @@ public class MoveSpider : MonoBehaviour
     {
         for (int i = 0; i < _legs.Count; i++)
         {
-            if (_legs[i].SqrDistance > _maxDistance * _maxDistance)
-                _legs[i].MoveTarget();
+            if (_legs[i].SqrDistance > _maxDistance * _maxDistance && !_legs[i].Moving)
+                _legs[i].StartMoving();
+            if (_legs[i].Moving)
+                _legs[i].Move();
         }
     }
 
