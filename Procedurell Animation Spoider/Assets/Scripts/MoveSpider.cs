@@ -11,10 +11,18 @@ public class Leg
 
     public Vector3 LeafJointPosition { get { return _inverseKinematics.LeafJointPosition; } }
     public Vector3 TargetPosition { get { return _legTarget.Position; } }
+
+    public float SqrDistance { get { return (LeafJointPosition - TargetPosition).sqrMagnitude; } }
+
+    public void MoveTarget()
+    {
+        _inverseKinematics.SetTargetPosition(TargetPosition);
+    }
 }
 
 public class MoveSpider : MonoBehaviour
 {
+    [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
     [SerializeField] List<Leg> _legs;
 
     bool _isRunning = false;
@@ -30,6 +38,15 @@ public class MoveSpider : MonoBehaviour
     private void OnValidate()
     {
         _spiderDebugScript = GetComponent<SpiderDebug>();
+    }
+
+    private void LateUpdate()
+    {
+        for (int i = 0; i < _legs.Count; i++)
+        {
+            if (_legs[i].SqrDistance > _maxDistance * _maxDistance)
+                _legs[i].MoveTarget();
+        }
     }
 
     private void OnDrawGizmos()

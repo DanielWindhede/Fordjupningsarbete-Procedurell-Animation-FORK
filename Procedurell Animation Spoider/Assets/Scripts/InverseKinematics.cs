@@ -79,7 +79,12 @@ public class InverseKinematics : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    public void SetTargetPosition(Vector3 newTargetPosition)
+    {
+        _target.position = newTargetPosition;
+    }
+
+    private void Update()
     {
         DoInverseKinematics();
     }
