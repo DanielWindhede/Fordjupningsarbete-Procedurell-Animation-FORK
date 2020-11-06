@@ -27,6 +27,7 @@ public class InverseKinematics : MonoBehaviour
     Quaternion _startRotationRoot;
 
     Vector3 _startPosition;
+    bool _isFullyStretched;
 
     readonly int ROOT_JOINT_INDEX = 0;
     SpiderDebug _spiderDebugScript;
@@ -43,8 +44,10 @@ public class InverseKinematics : MonoBehaviour
         _spiderDebugScript = GetComponentInParent<SpiderDebug>();
     }
 
+    public Vector3 TargetPosition { get { return _target.position; } set { _target.position = value; } }
     public Vector3 RootJointPosition { get { return _joints[ROOT_JOINT_INDEX].position; } }
     public Vector3 LeafJointPosition { get { return _joints[_joints.Length - 1].position; } }
+    public bool IsStretched { get { return _isFullyStretched; } }
 
     void Init()
     {
@@ -83,10 +86,6 @@ public class InverseKinematics : MonoBehaviour
         _startPosition = _joints[ROOT_JOINT_INDEX].localPosition;
     }
 
-    public void SetTargetPosition(Vector3 newTargetPosition)
-    {
-        _target.position = newTargetPosition;
-    }
 
     public void Rotate(Vector3 pivot, Quaternion rotation)
     {
@@ -146,6 +145,7 @@ public class InverseKinematics : MonoBehaviour
 
     void Stretch()
     {
+        _isFullyStretched = true;
         Vector3 direction = (_target.position - _jointsPosition[ROOT_JOINT_INDEX]).normalized;
 
         for (int i = 1; i < _jointsPosition.Length; i++)
@@ -154,6 +154,8 @@ public class InverseKinematics : MonoBehaviour
 
     void Bend()
     {
+        _isFullyStretched = false;
+
         for (int iteration = 0; iteration < _maxIterationsPerFrame; iteration++)
         {
             //back -> try to move leg toward target
