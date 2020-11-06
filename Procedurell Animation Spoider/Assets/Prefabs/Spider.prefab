@@ -1867,12 +1867,24 @@ MonoBehaviour:
   _legs:
   - _legTarget: {fileID: 5670672188616775070}
     _inverseKinematics: {fileID: 668570381}
+    _mustBeGroundedLegTargets:
+    - {fileID: 2542867420723102648}
+    - {fileID: 1711918345222688681}
   - _legTarget: {fileID: 2542867420723102648}
     _inverseKinematics: {fileID: 1875075321232238942}
+    _mustBeGroundedLegTargets:
+    - {fileID: 5670672188616775070}
+    - {fileID: 4639662200083119879}
   - _legTarget: {fileID: 1711918345222688681}
     _inverseKinematics: {fileID: 5595987638672359374}
+    _mustBeGroundedLegTargets:
+    - {fileID: 4639662200083119879}
+    - {fileID: 5670672188616775070}
   - _legTarget: {fileID: 4639662200083119879}
     _inverseKinematics: {fileID: 9087685093620487298}
+    _mustBeGroundedLegTargets:
+    - {fileID: 1711918345222688681}
+    - {fileID: 2542867420723102648}
 --- !u!114 &772433131223317174
 MonoBehaviour:
   m_ObjectHideFlags: 0

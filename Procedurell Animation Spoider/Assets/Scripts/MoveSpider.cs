@@ -8,17 +8,45 @@ public class Leg
 {
     [SerializeField] LegTarget _legTarget;
     [SerializeField] InverseKinematics _inverseKinematics;
+    //Used to get Legs that must be grounded
+    [SerializeField] LegTarget[] _mustBeGroundedLegTargets;
+
+    List<Leg> _mustBeGroundedLegs;
 
     Vector3 _startMovingJointPosition;
     float _currentMoveFraction;
-
-    public static float MoveSpeed { get; set; }
 
     public Vector3 LeafJointPosition { get { return _inverseKinematics.LeafJointPosition; } }
     public Vector3 TargetPosition { get { return _legTarget.Position; } }
     public bool Moving { get; private set; }
 
     public float SqrDistance { get { return (LeafJointPosition - TargetPosition).sqrMagnitude; } }
+
+    public void SetupOppositeLegs(List<Leg> allLegs)
+    {
+        _mustBeGroundedLegs = new List<Leg>();
+        for (int i = 0; i < allLegs.Count; i++)
+        {
+            for (int j = 0; j < _mustBeGroundedLegTargets.Length; j++)
+            {
+                if (allLegs[i]._legTarget == _mustBeGroundedLegTargets[j])
+                    _mustBeGroundedLegs.Add(allLegs[i]);
+            }
+        }
+    }
+
+    //If any of the opposite legs is moving this leg can't move!
+    //Usually only 1 leg but support exists for multiple
+    public bool CanStartMoving()
+    {
+        for (int i = 0; i < _mustBeGroundedLegs.Count; i++)
+        {
+            if (_mustBeGroundedLegs[i].Moving)
+                return false;
+        }
+
+        return true;
+    }
 
     public void UpdateInverseKinematics()
     {
@@ -32,9 +60,9 @@ public class Leg
         _currentMoveFraction = 0;
     }
 
-    public void Move()
+    public void Move(float moveSpeed)
     {
-        _currentMoveFraction += Time.deltaTime * MoveSpeed;
+        _currentMoveFraction += Time.deltaTime * moveSpeed;
         Vector3 newPosition = Vector3.Lerp(_startMovingJointPosition, TargetPosition, _currentMoveFraction);
         _inverseKinematics.SetTargetPosition(newPosition);
 
@@ -63,7 +91,10 @@ public class MoveSpider : MonoBehaviour
     private void Awake()
     {
         _spiderDebugScript = GetComponent<SpiderDebug>();
-        Leg.MoveSpeed = _moveSpeed;
+
+        for (int i = 0; i < _legs.Count; i++)
+            _legs[i].SetupOppositeLegs(_legs);
+
         _lastRotation = _body.localRotation;
         _isRunning = true;
     }
@@ -77,10 +108,10 @@ public class MoveSpider : MonoBehaviour
     {
         for (int i = 0; i < _legs.Count; i++)
         {
-            if (_legs[i].SqrDistance > _maxDistance * _maxDistance && !_legs[i].Moving)
+            if (_legs[i].SqrDistance > _maxDistance * _maxDistance && !_legs[i].Moving && _legs[i].CanStartMoving())
                 _legs[i].StartMoving();
             if (_legs[i].Moving)
-                _legs[i].Move();
+                _legs[i].Move(_moveSpeed);
 
             if (_lastRotation != _body.localRotation)
                 _legs[i].Rotate(_body.transform.position, _body.transform.localRotation);
