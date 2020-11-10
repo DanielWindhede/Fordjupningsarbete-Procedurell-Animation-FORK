@@ -1899,6 +1899,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed913919b712284b89d00e2be409220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _body: {fileID: 1367122425150370354}
+  _bodyHeightOffset: 0.9
   _minimumLegSpeed: 6
   _maxDistance: 1
   _legs:
@@ -2697,7 +2699,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &3187433727159812892
@@ -2861,7 +2863,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &3626357902882696853
@@ -3025,7 +3027,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &4323875247525632090
@@ -3296,7 +3298,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &4757481304668722837
@@ -3637,7 +3639,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &4901908152429443216
@@ -4562,7 +4564,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &6021544301059190386
@@ -5053,7 +5055,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &6674913180024404847
@@ -5217,7 +5219,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _rayCastColor: {r: 1, g: 1, b: 0, a: 1}
-  _maxDistance: 1.75
+  _maxDistance: 4
   _shootRayYPosition: 0.9
   _idealYPosition: -1.86
 --- !u!1 &6864355021159971651

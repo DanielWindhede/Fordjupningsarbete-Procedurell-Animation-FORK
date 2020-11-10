@@ -99,7 +99,8 @@ public class Leg
 
 public class MoveSpiderLegs : MonoBehaviour
 {
-    //[SerializeField] Transform _body;
+    [SerializeField] Transform _body;
+    [SerializeField, Range(0.01f, 10f)] float _bodyHeightOffset = 1.2f;
     [SerializeField, Range(0.01f, 100f)] float _minimumLegSpeed = 1f;
     [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
     [SerializeField] List<Leg> _legs;
@@ -127,8 +128,12 @@ public class MoveSpiderLegs : MonoBehaviour
 
     private void LateUpdate()
     {
+        Vector3 addedLegPositions = Vector3.zero;
+
         for (int i = 0; i < _legs.Count; i++)
         {
+            addedLegPositions += _legs[i].LeafJointPosition;
+
             if ((_legs[i].SqrDistance > _maxDistance * _maxDistance || _legs[i].Stretched) && !_legs[i].Moving && _legs[i].CanStartMoving)
                 _legs[i].StartMoving(_maxDistance);
             if (_legs[i].Moving)
@@ -137,8 +142,23 @@ public class MoveSpiderLegs : MonoBehaviour
             //if (_lastRotation != _body.localRotation)
             //    _legs[i].Rotate(_body.transform.position, _body.transform.localRotation);
         }
+        Vector3 averageLegPosition = addedLegPositions / _legs.Count;
+
+        SetBodyHeight(averageLegPosition);
+        RotateBody();
 
         //_lastRotation = _body.localRotation;
+    }
+
+    void SetBodyHeight(Vector3 averageLegPosition)
+    {
+        Vector3 newPosition = new Vector3(_body.position.x, averageLegPosition.y + _bodyHeightOffset, _body.position.z);
+        _body.position = newPosition;
+    }
+
+    void RotateBody()
+    {
+
     }
 
     private void OnDrawGizmos()
