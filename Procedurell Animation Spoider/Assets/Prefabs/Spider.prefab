@@ -1838,6 +1838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7860567079426761498}
+  - component: {fileID: 5644916027511635478}
   - component: {fileID: 8188652467982450608}
   - component: {fileID: 772433131223317174}
   m_Layer: 0
@@ -1871,6 +1872,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5644916027511635478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1725319293425774141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf736011c245fae4991ea1b008bf3019, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 5
+  _rotateSpeed: 4
+  _body: {fileID: 1367122425150370354}
 --- !u!114 &8188652467982450608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1883,64 +1899,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed913919b712284b89d00e2be409220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minimumLegSpeed: 7
-  _maxDistance: 1.2
+  _minimumLegSpeed: 6
+  _maxDistance: 1
   _legs:
   - _legTarget: {fileID: 5670672188616775070}
     _inverseKinematics: {fileID: 668570381}
     _mustBeGroundedLegTargets:
     - {fileID: 2542867420723102648}
-    - {fileID: 7165440871336200365}
-    - {fileID: 6763168478128666716}
-    - {fileID: 1711918345222688681}
   - _legTarget: {fileID: 2542867420723102648}
     _inverseKinematics: {fileID: 1875075321232238942}
     _mustBeGroundedLegTargets:
     - {fileID: 5670672188616775070}
-    - {fileID: 7657977211257278893}
-    - {fileID: 6218397948070320272}
-    - {fileID: 4639662200083119879}
   - _legTarget: {fileID: 7165440871336200365}
     _inverseKinematics: {fileID: 2613025864581452328}
     _mustBeGroundedLegTargets:
-    - {fileID: 5670672188616775070}
     - {fileID: 7657977211257278893}
-    - {fileID: 6218397948070320272}
-    - {fileID: 4639662200083119879}
   - _legTarget: {fileID: 7657977211257278893}
     _inverseKinematics: {fileID: 2204930284161825313}
     _mustBeGroundedLegTargets:
-    - {fileID: 2542867420723102648}
     - {fileID: 7165440871336200365}
-    - {fileID: 6763168478128666716}
-    - {fileID: 1711918345222688681}
   - _legTarget: {fileID: 6218397948070320272}
     _inverseKinematics: {fileID: 124769893126856817}
     _mustBeGroundedLegTargets:
-    - {fileID: 2542867420723102648}
-    - {fileID: 7165440871336200365}
     - {fileID: 6763168478128666716}
-    - {fileID: 1711918345222688681}
   - _legTarget: {fileID: 6763168478128666716}
     _inverseKinematics: {fileID: 1667736002074013657}
     _mustBeGroundedLegTargets:
-    - {fileID: 5670672188616775070}
-    - {fileID: 7657977211257278893}
     - {fileID: 6218397948070320272}
-    - {fileID: 4639662200083119879}
   - _legTarget: {fileID: 1711918345222688681}
     _inverseKinematics: {fileID: 5595987638672359374}
     _mustBeGroundedLegTargets:
-    - {fileID: 5670672188616775070}
-    - {fileID: 7657977211257278893}
-    - {fileID: 6218397948070320272}
     - {fileID: 4639662200083119879}
   - _legTarget: {fileID: 4639662200083119879}
     _inverseKinematics: {fileID: 9087685093620487298}
     _mustBeGroundedLegTargets:
-    - {fileID: 2542867420723102648}
-    - {fileID: 7165440871336200365}
-    - {fileID: 6763168478128666716}
     - {fileID: 1711918345222688681}
 --- !u!114 &772433131223317174
 MonoBehaviour:
@@ -2700,7 +2692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 3
 --- !u!1 &3187433727159812892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,7 +2848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 1
 --- !u!1 &3626357902882696853
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,7 +3004,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 0
 --- !u!1 &4323875247525632090
 GameObject:
   m_ObjectHideFlags: 0
@@ -3278,7 +3267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 0
 --- !u!1 &4757481304668722837
 GameObject:
   m_ObjectHideFlags: 0
@@ -3612,7 +3600,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 1
 --- !u!1 &4901908152429443216
 GameObject:
   m_ObjectHideFlags: 0
@@ -4530,7 +4517,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 0
 --- !u!1 &6021544301059190386
 GameObject:
   m_ObjectHideFlags: 0
@@ -5014,7 +5000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 2
 --- !u!1 &6674913180024404847
 GameObject:
   m_ObjectHideFlags: 0
@@ -5171,7 +5156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a43088f47c3370459b5ff4bd180cab1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _index: 1
 --- !u!1 &6864355021159971651
 GameObject:
   m_ObjectHideFlags: 0
