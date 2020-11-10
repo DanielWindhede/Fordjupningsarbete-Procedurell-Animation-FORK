@@ -91,21 +91,21 @@ public class Leg
         _inverseKinematics.TargetPosition = newPosition;
     }
 
-    public void Rotate(Vector3 pivot, Quaternion rotation)
-    {
-        _inverseKinematics.Rotate(pivot, rotation);
-    }
+    //public void Rotate(Vector3 pivot, Quaternion rotation)
+    //{
+    //    _inverseKinematics.Rotate(pivot, rotation);
+    //}
 }
 
-public class MoveSpider : MonoBehaviour
+public class MoveSpiderLegs : MonoBehaviour
 {
-    [SerializeField] Transform _body;
+    //[SerializeField] Transform _body;
     [SerializeField, Range(0.01f, 100f)] float _minimumLegSpeed = 1f;
     [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
     [SerializeField] List<Leg> _legs;
 
     bool _isRunning = false;
-    Quaternion _lastRotation;
+    //Quaternion _lastRotation;
 
     SpiderDebug _spiderDebugScript;
 
@@ -116,7 +116,7 @@ public class MoveSpider : MonoBehaviour
         for (int i = 0; i < _legs.Count; i++)
             _legs[i].SetupOppositeLegs(_legs);
 
-        _lastRotation = _body.localRotation;
+        //_lastRotation = _body.localRotation;
         _isRunning = true;
     }
 
@@ -134,11 +134,11 @@ public class MoveSpider : MonoBehaviour
             if (_legs[i].Moving)
                 _legs[i].Move(_minimumLegSpeed);
 
-            if (_lastRotation != _body.localRotation)
-                _legs[i].Rotate(_body.transform.position, _body.transform.localRotation);
+            //if (_lastRotation != _body.localRotation)
+            //    _legs[i].Rotate(_body.transform.position, _body.transform.localRotation);
         }
 
-        _lastRotation = _body.localRotation;
+        //_lastRotation = _body.localRotation;
     }
 
     private void OnDrawGizmos()

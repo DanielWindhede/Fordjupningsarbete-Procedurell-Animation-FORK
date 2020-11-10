@@ -16,7 +16,7 @@ public class SpiderDebug : MonoBehaviour
 
     [Header("Debug Settings")]
 
-    [SerializeField] Vector3 _moveSpiderHandleStartPosition;
+    //[SerializeField] Vector3 _moveSpiderHandleStartPosition;
 
     [SerializeField] Color _JointColor;
     [SerializeField] Color _PoleColor;
@@ -32,12 +32,12 @@ public class SpiderDebug : MonoBehaviour
     [SerializeField, Range(0.01f, 10f)] float _PoleRadius;
     [SerializeField, Range(0.01f, 10f)] float _SegmentWidth;
 
-    [Header("Drop")]
+    //[Header("Drop")]
 
-    [SerializeField] Transform[] _moveSpiderTransforms;
+    //[SerializeField] Transform[] _moveSpiderTransforms;
 
-    Vector3[] _moveSpiderOffsets;
-    Vector3 _currentMoveSpiderAxis;
+    //Vector3[] _moveSpiderOffsets;
+    //Vector3 _currentMoveSpiderAxis;
 
     public bool ShowJoints                        { get { return _showJoints; } }
     public bool ShowLegsWireframes               { get { return _showLegsWireframes; } }
@@ -45,8 +45,8 @@ public class SpiderDebug : MonoBehaviour
     public bool ShowTargets                      { get { return _showTargets; } }
     public bool ShowPoles                        { get { return _showPoles; } }
 
-    public Vector3 MoveSpiderHandleStartPosition { get { return _moveSpiderHandleStartPosition; } }
-    public Vector3 CurrentMoveSpiderAxisPosition { get { return _currentMoveSpiderAxis; } set { _currentMoveSpiderAxis = value; } }
+    //public Vector3 MoveSpiderHandleStartPosition { get { return _moveSpiderHandleStartPosition; } }
+    //public Vector3 CurrentMoveSpiderAxisPosition { get { return _currentMoveSpiderAxis; } set { _currentMoveSpiderAxis = value; } }
 
     public Color JointColor                       { get { return _JointColor; } }
     public Color PoleColor                       { get { return _PoleColor; } }
@@ -62,28 +62,28 @@ public class SpiderDebug : MonoBehaviour
     public float PoleRadius                      { get { return _PoleRadius; } }
     public float SegmentWidth                    { get { return _SegmentWidth; } }
 
-    private void Awake()
-    {
-        SetupMoveSpider();
-    }
+    //private void Awake()
+    //{
+    //    SetupMoveSpider();
+    //}
 
-    private void OnValidated()
-    {
-        SetupMoveSpider();
-    }
+    //private void OnValidated()
+    //{
+    //    SetupMoveSpider();
+    //}
 
-    void SetupMoveSpider()
-    {
-        _currentMoveSpiderAxis = _moveSpiderHandleStartPosition;
+    //void SetupMoveSpider()
+    //{
+    //    _currentMoveSpiderAxis = _moveSpiderHandleStartPosition;
 
-        _moveSpiderOffsets = new Vector3[_moveSpiderTransforms.Length];
-        for (int i = 0; i < _moveSpiderTransforms.Length; i++)
-            _moveSpiderOffsets[i] = _moveSpiderHandleStartPosition - _moveSpiderTransforms[i].position;
-    }
+    //    _moveSpiderOffsets = new Vector3[_moveSpiderTransforms.Length];
+    //    for (int i = 0; i < _moveSpiderTransforms.Length; i++)
+    //        _moveSpiderOffsets[i] = _moveSpiderHandleStartPosition - _moveSpiderTransforms[i].position;
+    //}
 
-    public void MoveSpider(Vector3 axisPosition)
-    {
-        for (int i = 0; i < _moveSpiderTransforms.Length; i++)
-            _moveSpiderTransforms[i].position = axisPosition - _moveSpiderOffsets[i];
-    }
+    //public void MoveSpider(Vector3 axisPosition)
+    //{
+    //    for (int i = 0; i < _moveSpiderTransforms.Length; i++)
+    //        _moveSpiderTransforms[i].position = axisPosition - _moveSpiderOffsets[i];
+    //}
 }
