@@ -86,14 +86,6 @@ public class InverseKinematics : MonoBehaviour
         _startPosition = _joints[ROOT_JOINT_INDEX].localPosition;
     }
 
-
-    //public void Rotate(Vector3 pivot, Quaternion rotation)
-    //{
-    //    Vector3 direction = _startPosition;
-    //    direction = rotation * direction;
-    //    _joints[ROOT_JOINT_INDEX].position = direction + pivot;
-    //}
-
     private void Update()
     {
         DoInverseKinematics();

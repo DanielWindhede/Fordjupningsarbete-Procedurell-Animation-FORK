@@ -9,9 +9,9 @@ public class LegTarget : MonoBehaviour
     [SerializeField] Color _rayCastColor;
     [SerializeField, Range(0.01f, 100)] float _maxDistance = 1.5f;
     [SerializeField, Range(-20f, 20)] float _shootRayYPosition = -0.15f;
-    [SerializeField, Range(-20f, 20f)] float _idealYPosition;
 
     public Vector3 Position { get { return this.transform.position; } set { this.transform.position = value; } }
+    public Vector3 Normal { get; private set; }
 
     private void Update()
     {
@@ -27,6 +27,9 @@ public class LegTarget : MonoBehaviour
 
         RaycastHit hit;
         if(Physics.Raycast(origin, -_body.up, out hit, _maxDistance, _layerMask))
+        {
             transform.position = hit.point;
+            Normal = hit.normal;
+        }
     }
 }

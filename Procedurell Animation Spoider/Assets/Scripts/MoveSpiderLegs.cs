@@ -21,6 +21,7 @@ public class Leg
     public Vector3 TargetPosition { get { return _legTarget.Position; } private set { _legTarget.Position = value; } }
     public bool Moving { get; private set; }
     public bool Stretched { get { return _inverseKinematics.IsStretched; } }
+    public Vector3 Normal { get { return _legTarget.Normal; } }
 
     public float SqrDistance { get { return (LeafJointPosition - TargetPosition).sqrMagnitude; } }
 
@@ -90,11 +91,6 @@ public class Leg
         Vector3 newPosition = Vector3.Lerp(_startMovingJointPosition, _virtualTargetPosition, _currentMoveFraction);
         _inverseKinematics.TargetPosition = newPosition;
     }
-
-    //public void Rotate(Vector3 pivot, Quaternion rotation)
-    //{
-    //    _inverseKinematics.Rotate(pivot, rotation);
-    //}
 }
 
 public class MoveSpiderLegs : MonoBehaviour
@@ -106,7 +102,6 @@ public class MoveSpiderLegs : MonoBehaviour
     [SerializeField] List<Leg> _legs;
 
     bool _isRunning = false;
-    //Quaternion _lastRotation;
 
     SpiderDebug _spiderDebugScript;
 
@@ -117,7 +112,6 @@ public class MoveSpiderLegs : MonoBehaviour
         for (int i = 0; i < _legs.Count; i++)
             _legs[i].SetupOppositeLegs(_legs);
 
-        //_lastRotation = _body.localRotation;
         _isRunning = true;
     }
 
@@ -129,25 +123,23 @@ public class MoveSpiderLegs : MonoBehaviour
     private void LateUpdate()
     {
         Vector3 addedLegPositions = Vector3.zero;
+        Vector3 addedLegNormals = Vector3.zero;
 
         for (int i = 0; i < _legs.Count; i++)
         {
             addedLegPositions += _legs[i].LeafJointPosition;
+            addedLegNormals += _legs[i].Normal;
 
             if ((_legs[i].SqrDistance > _maxDistance * _maxDistance || _legs[i].Stretched) && !_legs[i].Moving && _legs[i].CanStartMoving)
                 _legs[i].StartMoving(_maxDistance);
             if (_legs[i].Moving)
                 _legs[i].Move(_minimumLegSpeed);
-
-            //if (_lastRotation != _body.localRotation)
-            //    _legs[i].Rotate(_body.transform.position, _body.transform.localRotation);
         }
         Vector3 averageLegPosition = addedLegPositions / _legs.Count;
+        Vector3 averageLegNormal = addedLegNormals / _legs.Count;
 
         SetBodyHeight(averageLegPosition);
-        RotateBody();
-
-        //_lastRotation = _body.localRotation;
+        RotateBody(averageLegNormal);
     }
 
     void SetBodyHeight(Vector3 averageLegPosition)
@@ -156,9 +148,9 @@ public class MoveSpiderLegs : MonoBehaviour
         _body.position = newPosition;
     }
 
-    void RotateBody()
+    void RotateBody(Vector3 averageLegNormal)
     {
-
+        _body.up = averageLegNormal;
     }
 
     private void OnDrawGizmos()
