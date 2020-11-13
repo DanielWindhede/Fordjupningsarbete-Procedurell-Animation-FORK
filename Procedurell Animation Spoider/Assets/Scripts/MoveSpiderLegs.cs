@@ -18,12 +18,13 @@ public class Leg
     float _currentMoveFraction;
 
     public Vector3 LeafJointPosition { get { return _inverseKinematics.LeafJointPosition; } }
-    public Vector3 TargetPosition { get { return _legTarget.Position; } private set { _legTarget.Position = value; } }
+    public Vector3 TargetPosition { get { return _legTarget.Position; } }
+    public Vector3 VirtualTargetPosition { get { return _legTarget.VirtualPosition; } }
     public bool Moving { get; private set; }
     public bool Stretched { get { return _inverseKinematics.IsStretched; } }
     public Vector3 Normal { get { return _legTarget.Normal; } }
 
-    public float SqrDistance { get { return (LeafJointPosition - TargetPosition).sqrMagnitude; } }
+    public float SqrDistance { get { return (LeafJointPosition - VirtualTargetPosition).sqrMagnitude; } }
 
     public void SetupOppositeLegs(List<Leg> allLegs)
     {
@@ -65,11 +66,11 @@ public class Leg
 
         if (SqrDistance < maxDistance * maxDistance)
         {
-            Vector3 direction = (TargetPosition - _startMovingJointPosition).normalized;
+            Vector3 direction = (VirtualTargetPosition - _startMovingJointPosition).normalized;
             _virtualTargetPosition = _startMovingJointPosition + direction * maxDistance;
         }
         else
-            _virtualTargetPosition = TargetPosition;
+            _virtualTargetPosition = VirtualTargetPosition;
 
         Moving = true;
         _currentMoveFraction = 0;
@@ -99,11 +100,13 @@ public class MoveSpiderLegs : MonoBehaviour
     [SerializeField, Range(0.01f, 10f)] float _bodyHeightOffset = 1.2f;
     [SerializeField, Range(0.01f, 100f)] float _minimumLegSpeed = 1f;
     [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
+    [SerializeField, Range(0.01f, 10f)] float _virtualLegTargetRadius;
     [SerializeField] List<Leg> _legs;
 
     bool _isRunning = false;
 
     SpiderDebug _spiderDebugScript;
+    public float VirtualLegTargetRadius { get { return _virtualLegTargetRadius; } }
 
     private void Awake()
     {
@@ -138,8 +141,8 @@ public class MoveSpiderLegs : MonoBehaviour
         Vector3 averageLegPosition = addedLegPositions / _legs.Count;
         Vector3 averageLegNormal = addedLegNormals / _legs.Count;
 
-        SetBodyHeight(averageLegPosition);
-        RotateBody(averageLegNormal);
+        //SetBodyHeight(averageLegPosition);
+        //RotateBody(averageLegNormal);
     }
 
     void SetBodyHeight(Vector3 averageLegPosition)
@@ -153,7 +156,7 @@ public class MoveSpiderLegs : MonoBehaviour
         _body.up = averageLegNormal;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = _spiderDebugScript.LegTargetColor;
         for (int i = 0; i < _legs.Count; i++)

@@ -13,6 +13,8 @@ public class ControlSpider : MonoBehaviour
 
     [SerializeField] Transform _body;
 
+    public Vector3 Direction { get; private set; }
+
     private void FixedUpdate()
     {
         float horizontal = Input.GetAxis(InputManager.HORIZONTAL);
@@ -27,8 +29,8 @@ public class ControlSpider : MonoBehaviour
     {
         Vector3 forward = _body.forward * -vertical;
         Vector3 right = _body.right * -horizontal;
-        Vector3 direction = forward + right;
-        _body.localPosition = _body.localPosition + direction * Time.fixedDeltaTime * _moveSpeed;
+        Direction = forward + right;
+        _body.localPosition = _body.localPosition + Direction * Time.fixedDeltaTime * _moveSpeed;
     }
 
     void Rotate(float rotate)

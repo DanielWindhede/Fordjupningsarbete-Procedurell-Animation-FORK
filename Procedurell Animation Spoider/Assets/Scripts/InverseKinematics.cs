@@ -202,7 +202,7 @@ public class InverseKinematics : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (_spiderDebugScript != null)
         {

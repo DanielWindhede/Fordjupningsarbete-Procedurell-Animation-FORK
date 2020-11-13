@@ -7,83 +7,52 @@ public class SpiderDebug : MonoBehaviour
 {
     [Header("Activation")]
 
-    [SerializeField] bool _showJoints = true;
-    [SerializeField] bool _showLegsWireframes = true;
-    [SerializeField] bool _showLegs = true;
-    [SerializeField] bool _showTargets = true;
-    [SerializeField] bool _showPoles = true;
-    [SerializeField] bool _showLegTargets = true;
+    [SerializeField] private bool _showJoints = true;
+    [SerializeField] private bool _showLegsWireframes = true;
+    [SerializeField] private bool _showLegs = true;
+    [SerializeField] private bool _showTargets = true;
+    [SerializeField] private bool _showPoles = true;
+    [SerializeField] private bool _showLegTargets = true;
+    [SerializeField] private bool _showVirtualLegTargetRadius = true;
 
     [Header("Debug Settings")]
 
-    //[SerializeField] Vector3 _moveSpiderHandleStartPosition;
+    [SerializeField] private Color _jointColor;
+    [SerializeField] private Color _poleColor;
+    [SerializeField] private Color _legColor;
+    [SerializeField] private Color _targetColor;
+    [SerializeField] private Color _LegWireframeColor = Color.white;
+    [SerializeField] private Color _legTargetColor;
+    [SerializeField] private Color _distanceColor;
+    [SerializeField] private Color _virtualLegTargetColor;
+    [SerializeField] private Color _virtualLegTargetRadiusColor;
 
-    [SerializeField] Color _JointColor;
-    [SerializeField] Color _PoleColor;
-    [SerializeField] Color _LegColor;
-    [SerializeField] Color _TargetColor;
-    [SerializeField] Color _LegWireframeColor = Color.white;
-    [SerializeField] Color _legTargetColor;
-    [SerializeField] Color _distanceColor;
+    [SerializeField, Range(0.01f, 10f)] private float _jointPositionRadius;
+    [SerializeField, Range(0.01f, 10f)] private float _targetRadius;
+    [SerializeField, Range(0.01f, 10f)] private float _legTargetPositionRadius;
+    [SerializeField, Range(0.01f, 10f)] private float _poleRadius;
+    [SerializeField, Range(0.01f, 10f)] private float _segmentWidth;
 
-    [SerializeField, Range(0.01f, 10f)] float _JointPositionRadius;
-    [SerializeField, Range(0.01f, 10f)] float _TargetRadius;
-    [SerializeField, Range(0.01f, 10f)] float _legTargetPositionRadius;
-    [SerializeField, Range(0.01f, 10f)] float _PoleRadius;
-    [SerializeField, Range(0.01f, 10f)] float _SegmentWidth;
-
-    //[Header("Drop")]
-
-    //[SerializeField] Transform[] _moveSpiderTransforms;
-
-    //Vector3[] _moveSpiderOffsets;
-    //Vector3 _currentMoveSpiderAxis;
-
-    public bool ShowJoints                        { get { return _showJoints; } }
+    public bool ShowJoints                       { get { return _showJoints; } }
     public bool ShowLegsWireframes               { get { return _showLegsWireframes; } }
     public bool ShowLegs                         { get { return _showLegs; } }
     public bool ShowTargets                      { get { return _showTargets; } }
     public bool ShowPoles                        { get { return _showPoles; } }
+    public bool ShowVirtualLegTarget             { get { return _showPoles; } }
 
-    //public Vector3 MoveSpiderHandleStartPosition { get { return _moveSpiderHandleStartPosition; } }
-    //public Vector3 CurrentMoveSpiderAxisPosition { get { return _currentMoveSpiderAxis; } set { _currentMoveSpiderAxis = value; } }
-
-    public Color JointColor                       { get { return _JointColor; } }
-    public Color PoleColor                       { get { return _PoleColor; } }
-    public Color LegColor                        { get { return _LegColor; } }
-    public Color TargetColor                     { get { return _TargetColor; } }
+    public Color JointColor                      { get { return _jointColor; } }
+    public Color PoleColor                       { get { return _poleColor; } }
+    public Color LegColor                        { get { return _legColor; } }
+    public Color TargetColor                     { get { return _targetColor; } }
     public Color LegWireframeColor               { get { return _LegWireframeColor; } }
     public Color LegTargetColor                  { get { return _legTargetColor; } }
+    public Color VirtualLegTargetRadiusColor     { get { return _virtualLegTargetRadiusColor; } }
+    public Color VirtualLegTargetColor           { get { return _virtualLegTargetColor; } }
     public Color DistanceColor                   { get { return _distanceColor; } }
     
-    public float JointPositionRadius              { get { return _JointPositionRadius; } }
-    public float TargetRadius                    { get { return _TargetRadius; } }
+    public float JointPositionRadius             { get { return _jointPositionRadius; } }
+    public float TargetRadius                    { get { return _targetRadius; } }
     public float LegTargetPositionRadius         { get { return _legTargetPositionRadius; } }
-    public float PoleRadius                      { get { return _PoleRadius; } }
-    public float SegmentWidth                    { get { return _SegmentWidth; } }
-
-    //private void Awake()
-    //{
-    //    SetupMoveSpider();
-    //}
-
-    //private void OnValidated()
-    //{
-    //    SetupMoveSpider();
-    //}
-
-    //void SetupMoveSpider()
-    //{
-    //    _currentMoveSpiderAxis = _moveSpiderHandleStartPosition;
-
-    //    _moveSpiderOffsets = new Vector3[_moveSpiderTransforms.Length];
-    //    for (int i = 0; i < _moveSpiderTransforms.Length; i++)
-    //        _moveSpiderOffsets[i] = _moveSpiderHandleStartPosition - _moveSpiderTransforms[i].position;
-    //}
-
-    //public void MoveSpider(Vector3 axisPosition)
-    //{
-    //    for (int i = 0; i < _moveSpiderTransforms.Length; i++)
-    //        _moveSpiderTransforms[i].position = axisPosition - _moveSpiderOffsets[i];
-    //}
+    public float PoleRadius                      { get { return _poleRadius; } }
+    public float SegmentWidth                    { get { return _segmentWidth; } }
 }
