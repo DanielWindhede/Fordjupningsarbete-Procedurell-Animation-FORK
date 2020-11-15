@@ -31,6 +31,7 @@ public class SpiderDebug : MonoBehaviour
     [SerializeField, Range(0.01f, 10f)] private float _targetRadius;
     [SerializeField, Range(0.01f, 10f)] private float _legTargetPositionRadius;
     [SerializeField, Range(0.01f, 10f)] private float _poleRadius;
+    [SerializeField, Range(0.01f, 10f)] private float _virtualLegTargetRadiusRadius = 0.1f;
     [SerializeField, Range(0.01f, 10f)] private float _segmentWidth;
 
     public bool ShowJoints                       { get { return _showJoints; } }
@@ -38,6 +39,7 @@ public class SpiderDebug : MonoBehaviour
     public bool ShowLegs                         { get { return _showLegs; } }
     public bool ShowTargets                      { get { return _showTargets; } }
     public bool ShowPoles                        { get { return _showPoles; } }
+    public bool ShowLegTargets                   { get { return _showLegTargets; } }
     public bool ShowVirtualLegTarget             { get { return _showPoles; } }
 
     public Color JointColor                      { get { return _jointColor; } }
@@ -54,5 +56,6 @@ public class SpiderDebug : MonoBehaviour
     public float TargetRadius                    { get { return _targetRadius; } }
     public float LegTargetPositionRadius         { get { return _legTargetPositionRadius; } }
     public float PoleRadius                      { get { return _poleRadius; } }
+    public float VirtualLegTargetRadiusRadius    { get { return _virtualLegTargetRadiusRadius; } }
     public float SegmentWidth                    { get { return _segmentWidth; } }
 }

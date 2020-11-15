@@ -158,11 +158,6 @@ public class MoveSpiderLegs : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = _spiderDebugScript.LegTargetColor;
-        for (int i = 0; i < _legs.Count; i++)
-            Gizmos.DrawSphere(_legs[i].TargetPosition, _spiderDebugScript.LegTargetPositionRadius);
-
-
         if (_isRunning)
         {
             Gizmos.color = _spiderDebugScript.DistanceColor;

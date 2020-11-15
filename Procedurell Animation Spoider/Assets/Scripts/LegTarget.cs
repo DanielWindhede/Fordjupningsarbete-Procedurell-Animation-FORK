@@ -11,14 +11,11 @@ public class LegTarget : MonoBehaviour
     [SerializeField, Range(0.01f, 100)] private float _maxDistance = 1.5f;
     [SerializeField, Range(-20f, 20)] private float _shootRayYPosition = -0.15f;
 
-    private SpiderDebug _spiderDebug;
-    private ControlSpider _controlSpider;
-    private MoveSpiderLegs _moveSpiderLegs;
+    private ActorControl _actorControl;
     private Vector3 _virtualDirection;
-    private Vector3 _virtualPosition;
 
     public Vector3 Position { get { return transform.position; } private set { transform.position = value; } }
-    public Vector3 VirtualPosition { get { return _virtualPosition; } private set { _virtualPosition = value; } }
+    public Vector3 VirtualPosition { get; private set; }
     public Vector3 Normal { get; private set; }
 
     private void Awake()
@@ -33,10 +30,7 @@ public class LegTarget : MonoBehaviour
 
     private void Initialize()
     {
-        _spiderDebug = GetComponentInParent<SpiderDebug>();
-        _controlSpider = GetComponentInParent<ControlSpider>();
-        _moveSpiderLegs = GetComponentInParent<MoveSpiderLegs>();
-        _virtualPosition = transform.position;
+        _actorControl = GetComponentInParent<ActorControl>();
     }
 
     private void Update()
@@ -46,10 +40,10 @@ public class LegTarget : MonoBehaviour
 
     void UpdatePosition()
     {
-        if (_controlSpider.Direction != Vector3.zero)
-            _virtualDirection = _controlSpider.Direction.normalized;
+        if (_actorControl.ControlSpider.Direction != Vector3.zero)
+            _virtualDirection = _actorControl.ControlSpider.Direction.normalized;
 
-        Vector3 origin = transform.position + _virtualDirection * _moveSpiderLegs.VirtualLegTargetRadius;
+        Vector3 origin = transform.position + _virtualDirection * _actorControl.MoveSpiderLegs.VirtualLegTargetRadius;
         origin += _body.up * _shootRayYPosition;
 
         Debug.DrawLine(origin, origin - _body.up * _maxDistance, _rayCastColor);
@@ -58,19 +52,29 @@ public class LegTarget : MonoBehaviour
         if(Physics.Raycast(origin, -_body.up, out hit, _maxDistance, _layerMask))
         {
             Normal = hit.normal;
-            _virtualPosition = hit.point;
+            VirtualPosition = hit.point;
+            transform.position = hit.point - _virtualDirection.normalized * _actorControl.MoveSpiderLegs.VirtualLegTargetRadius;
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (_spiderDebug.ShowVirtualLegTarget)
+        if (_actorControl.SpiderDebug != null)
         {
-            Gizmos.color = _spiderDebug.VirtualLegTargetColor;
-            Gizmos.DrawSphere(_virtualPosition, 0.1f);
+            if (_actorControl.SpiderDebug.ShowVirtualLegTarget)
+            {
+                Gizmos.color = _actorControl.SpiderDebug.VirtualLegTargetColor;
+                Gizmos.DrawSphere(VirtualPosition, _actorControl.SpiderDebug.VirtualLegTargetRadiusRadius);
 
-            Handles.color = _spiderDebug.VirtualLegTargetRadiusColor;
-            Handles.DrawWireDisc(transform.position, _body.up, _moveSpiderLegs.VirtualLegTargetRadius);
+                Handles.color = _actorControl.SpiderDebug.VirtualLegTargetRadiusColor;
+                Handles.DrawWireDisc(transform.position, _body.up, _actorControl.MoveSpiderLegs.VirtualLegTargetRadius);
+            }
+            
+            if (_actorControl.SpiderDebug.ShowLegTargets)
+            {
+                Gizmos.color = _actorControl.SpiderDebug.LegTargetColor;
+                Gizmos.DrawSphere(Position, _actorControl.SpiderDebug.LegTargetPositionRadius);
+            }
         }
     }
 }
