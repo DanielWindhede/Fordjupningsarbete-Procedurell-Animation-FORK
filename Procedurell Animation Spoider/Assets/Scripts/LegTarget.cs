@@ -33,7 +33,7 @@ public class LegTarget : MonoBehaviour
         _actorControl = GetComponentInParent<ActorControl>();
     }
 
-    private void Update()
+    public void DoFixedUpdate()
     {
         UpdatePosition();
     }

@@ -15,7 +15,7 @@ public class ControlSpider : MonoBehaviour
 
     public Vector3 Direction { get; private set; }
 
-    private void FixedUpdate()
+    public void DoFixedUpdate()
     {
         float horizontal = Input.GetAxis(InputManager.HORIZONTAL);
         float vertical = Input.GetAxis(InputManager.VERTICAL);

@@ -86,11 +86,6 @@ public class InverseKinematics : MonoBehaviour
         _startPosition = _joints[ROOT_JOINT_INDEX].localPosition;
     }
 
-    private void Update()
-    {
-        DoInverseKinematics();
-    }
-
     public void DoInverseKinematics()
     {
         if (!PreRunCheck())

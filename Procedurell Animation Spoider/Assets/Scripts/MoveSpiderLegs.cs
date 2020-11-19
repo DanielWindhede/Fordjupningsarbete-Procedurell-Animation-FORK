@@ -123,7 +123,7 @@ public class MoveSpiderLegs : MonoBehaviour
         _spiderDebugScript = GetComponent<SpiderDebug>();
     }
 
-    private void LateUpdate()
+    public void DoFixedUpdate()
     {
         Vector3 addedLegPositions = Vector3.zero;
         Vector3 addedLegNormals = Vector3.zero;
@@ -147,7 +147,10 @@ public class MoveSpiderLegs : MonoBehaviour
 
     void SetBodyHeight(Vector3 averageLegPosition)
     {
-        Vector3 newPosition = new Vector3(_body.position.x, averageLegPosition.y + _bodyHeightOffset, _body.position.z);
+        //Vector3 newPosition = new Vector3(_body.position.x, averageLegPosition.y + _bodyHeightOffset, _body.position.z);
+        //_body.position = newPosition;
+
+        Vector3 newPosition = averageLegPosition + _body.up * _bodyHeightOffset;  
         _body.position = newPosition;
     }
 

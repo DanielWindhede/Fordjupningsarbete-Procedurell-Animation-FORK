@@ -16,7 +16,7 @@ public class FixJoints : MonoBehaviour
             _jointOffsets[i] = _jointRoots[i].position - transform.position;
     }
 
-    private void Update()
+    public void DoFixedUpdate()
     {
         Vector3 bodyPosition = transform.position;
         Quaternion bodyRotation = transform.localRotation;
