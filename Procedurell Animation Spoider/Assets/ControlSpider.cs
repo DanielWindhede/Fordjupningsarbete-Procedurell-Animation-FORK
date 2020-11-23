@@ -35,8 +35,7 @@ public class ControlSpider : MonoBehaviour
 
     void Rotate(float rotate)
     {
-        Vector3 eulerRotation = _body.localRotation.eulerAngles;
-        eulerRotation.y += rotate * _rotateSpeed;
-        _body.localRotation = Quaternion.Euler(eulerRotation);
+        _body.forward = Quaternion.AngleAxis(rotate * Time.fixedDeltaTime * _rotateSpeed, _body.up) * _body.forward;
+        //_body.transform.Rotate(Vector3.up, Time.fixedDeltaTime * rotate * _rotateSpeed);
     }
 }

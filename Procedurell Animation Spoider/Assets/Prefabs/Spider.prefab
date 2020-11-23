@@ -1884,7 +1884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 5
-  _rotateSpeed: 4
+  _rotateSpeed: 100
   _body: {fileID: 1367122425150370354}
 --- !u!114 &8188652467982450608
 MonoBehaviour:
@@ -1903,6 +1903,11 @@ MonoBehaviour:
   _minimumLegSpeed: 7
   _maxDistance: 1
   _virtualLegTargetRadius: 0.5
+  _correctBodyHeightInfluenceLength: 0.75
+  _correctPositionStrength: 4
+  _minimumBodyCorrectionStrength: 0.3
+  _maximumBodyCorrectionStrength: 6
+  _rotateBodyStrength: 4
   _legs:
   - _legTarget: {fileID: 5670672188616775070}
     _inverseKinematics: {fileID: 668570381}
@@ -1939,6 +1944,10 @@ MonoBehaviour:
   _showPoles: 1
   _showLegTargets: 1
   _showVirtualLegTargetRadius: 1
+  _showAverageLegPosition: 1
+  _showDistanceToTarget: 1
+  _showAverageLegPositionSphere: 1
+  _showDistanceFromAverageLegPosition: 1
   _jointColor: {r: 0, g: 0, b: 1, a: 1}
   _poleColor: {r: 1, g: 0, b: 1, a: 1}
   _legColor: {r: 1, g: 1, b: 0, a: 1}
@@ -1948,12 +1957,16 @@ MonoBehaviour:
   _distanceColor: {r: 1, g: 0.54962885, b: 0, a: 1}
   _virtualLegTargetColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
   _virtualLegTargetRadiusColor: {r: 0, g: 1, b: 1, a: 1}
+  _averageLegPositionColor: {r: 0.646976, g: 1, b: 0, a: 1}
+  _averageLegPositionSphereColor: {r: 0, g: 1, b: 0.5359082, a: 1}
+  _distanceFromAverageLegPositionColor: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 1}
   _jointPositionRadius: 0.1
   _targetRadius: 0.15
   _legTargetPositionRadius: 0.1
   _poleRadius: 0.1
   _virtualLegTargetRadiusRadius: 0.1
   _segmentWidth: 0.15
+  _averageLegPositionRadius: 0.1
 --- !u!1 &1968615438906232731
 GameObject:
   m_ObjectHideFlags: 0
