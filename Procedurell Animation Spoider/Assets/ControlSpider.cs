@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ControlSpider : MonoBehaviour
 {
+    const int FULL_CIRCLE_DEGREES = 360;
+
     [Header("Settings")]
 
     [SerializeField, Range(0.01f, 500f)] float _moveSpeed;
@@ -14,6 +16,7 @@ public class ControlSpider : MonoBehaviour
     [SerializeField] Transform _body;
 
     public Vector3 Direction { get; private set; }
+    public float Rotation { get; private set; }
 
     public void DoFixedUpdate()
     {
@@ -35,7 +38,9 @@ public class ControlSpider : MonoBehaviour
 
     void Rotate(float rotate)
     {
-        _body.forward = Quaternion.AngleAxis(rotate * Time.fixedDeltaTime * _rotateSpeed, _body.up) * _body.forward;
+        //_body.forward = Quaternion.AngleAxis(rotate * Time.fixedDeltaTime * _rotateSpeed, _body.up) * _body.forward;
         //_body.transform.Rotate(Vector3.up, Time.fixedDeltaTime * rotate * _rotateSpeed);
+        Rotation += rotate * Time.fixedDeltaTime * _rotateSpeed;
+        Rotation %= FULL_CIRCLE_DEGREES;
     }
 }

@@ -161,7 +161,11 @@ public class MoveSpiderLegs : MonoBehaviour
     void RotateBody(Vector3 averageLegNormal)
     {
         //_body.rotation = Quaternion.Lerp(_body.localRotation, _body.localRotation * Quaternion.FromToRotation(_body.up, averageLegNormal), Time.fixedDeltaTime * _rotateBodyStrength);
-        _body.up = Vector3.MoveTowards(_body.up, averageLegNormal, Time.fixedDeltaTime * 1);
+
+        _body.up = Vector3.MoveTowards(_body.up, averageLegNormal, Time.fixedDeltaTime * 1f);
+        _body.transform.Rotate(Vector3.up, _actorControl.ControlSpider.Rotation);
+
+        //_body.up = Vector3.MoveTowards(_body.up, averageLegNormal, Time.fixedDeltaTime * 1);
     }
 
     private void OnDrawGizmosSelected()
