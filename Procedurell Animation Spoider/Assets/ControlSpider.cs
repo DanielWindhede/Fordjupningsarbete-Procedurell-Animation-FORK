@@ -7,7 +7,7 @@ public class ControlSpider : MonoBehaviour
     const int FULL_CIRCLE_DEGREES = 360;
 
     [Header("Settings")]
-
+    [SerializeField] private bool autoWalk;
     [SerializeField, Range(0.01f, 500f)] float _moveSpeed;
     [SerializeField, Range(0.01f, 500f)] float _rotateSpeed;
 
@@ -24,7 +24,11 @@ public class ControlSpider : MonoBehaviour
         float vertical = Input.GetAxis(InputManager.VERTICAL);
         float rotate = Input.GetAxis(InputManager.ROTATE);
 
-        Move(horizontal, vertical);
+        if (autoWalk)
+            Move(horizontal, 1);
+        else
+            Move(horizontal, vertical);
+
         Rotate(rotate);
     }
 

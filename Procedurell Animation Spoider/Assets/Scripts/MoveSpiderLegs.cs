@@ -37,6 +37,9 @@ public class Leg
                     _mustBeGroundedLegs.Add(allLegs[i]);
             }
         }
+
+        _legTarget.DoFixedUpdate();
+        _virtualTargetPosition = VirtualTargetPosition;
     }
 
     //If any of the opposite legs is moving this leg can't move!
@@ -76,7 +79,7 @@ public class Leg
         _currentMoveFraction = 0;
     }
 
-    public void Move(float moveSpeed)
+    public void Move(float moveSpeed, float legHeight)
     {
         if (_currentMoveFraction >= 1.0f)
         {
@@ -90,7 +93,16 @@ public class Leg
 
         _currentMoveFraction += Time.deltaTime * moveSpeed * speedFraction;
         Vector3 newPosition = Vector3.Lerp(_startMovingJointPosition, _virtualTargetPosition, _currentMoveFraction);
+        newPosition += _inverseKinematics.transform.up * Lerp3(0, legHeight, 0, _currentMoveFraction);
         _inverseKinematics.TargetPosition = newPosition;
+    }
+
+    float Lerp3(float a, float b, float c, float t)
+    {
+        if (t <= 0.5f)
+            return Mathf.SmoothStep(a, b, t * 2); // perform task in half the time
+        else
+            return Mathf.SmoothStep(b, c, t * 2 - 1);
     }
 }
 
@@ -99,6 +111,7 @@ public class MoveSpiderLegs : MonoBehaviour
     [SerializeField] Transform _body;
     [SerializeField, Range(0.01f, 10f)] float _bodyHeightOffset = 1.2f;
     [SerializeField, Range(0.01f, 100f)] float _minimumLegSpeed = 1f;
+    [SerializeField, Range(0.01f, 100f)] float _legHeight = 1f;
     [SerializeField, Range(0.01f, 100f)] float _maxDistance = 0.5f;
     [SerializeField, Range(0.01f, 10f)] float _virtualLegTargetRadius;
     [SerializeField, Range(0.01f, 10f)] float _correctBodyHeightInfluenceLength = 0.75f;
@@ -141,9 +154,11 @@ public class MoveSpiderLegs : MonoBehaviour
 
             if ((_legs[i].SqrDistance > _maxDistance * _maxDistance || _legs[i].Stretched) && !_legs[i].Moving && _legs[i].CanStartMoving)
                 _legs[i].StartMoving(_maxDistance);
+
             if (_legs[i].Moving)
-                _legs[i].Move(_minimumLegSpeed);
+                _legs[i].Move(_minimumLegSpeed, _legHeight);
         }
+
         Vector3 averageLegPosition = addedLegPositions / _legs.Count;
         Vector3 averageLegNormal = addedLegNormals / _legs.Count;
 
