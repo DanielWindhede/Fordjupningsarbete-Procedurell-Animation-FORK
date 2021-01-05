@@ -378,29 +378,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 772433131223317174, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: _averageLegPositionSphereColor.a
-      value: 0.24313726
-      objectReference: {fileID: 0}
-    - target: {fileID: 1367122425150370354, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1725319293425774141, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
       propertyPath: m_Name
       value: Spider (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1725319293425774141, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1875075321232238942, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: _maxIterationsPerFrame
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5644916027511635478, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: autoWalk
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7860567079426761498, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -445,14 +425,6 @@ PrefabInstance:
     - target: {fileID: 7860567079426761498, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8188652467982450608, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: _minimumLegSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8188652467982450608, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
-      propertyPath: _legHeight
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 687f4229963ad2a4ab2e9c7226bb079d, type: 3}
