@@ -127,7 +127,7 @@ public class MoveSpiderLegs : MonoBehaviour
     ActorControl _actorControl;
     public float VirtualLegTargetRadius { get { return _virtualLegTargetRadius; } }
 
-    private void Awake()
+    private void Start()
     {
         _actorControl = GetComponent<ActorControl>();
 
